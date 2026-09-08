@@ -1,12 +1,27 @@
-venv/ 
-env/ 
-__pycache__/ 
-*.py[cod] 
-*$py.class 
-db.sqlite3 
-.env 
-.vscode/ 
-Thumbs.db 
-.DS_Store 
-media/ 
-staticfiles/ 
+# Virtual Environment
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+db.sqlite3
+
+# Environment Variables
+.env
+
+# IDE
+.vscode/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Media uploads
+media/
+
+# Static collected files
+staticfiles/

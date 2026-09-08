@@ -1,0 +1,852 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+
+<!-- ==================== Hero Slider ==================== -->
+
+<div id="heroSlider" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Indicators -->
+
+    <div class="carousel-indicators">
+
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active">
+        </button>
+
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1">
+        </button>
+
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2">
+        </button>
+
+    </div>
+
+
+    <!-- Images -->
+
+    <div class="carousel-inner">
+
+        <div class="carousel-item active">
+
+            <img src="{% static 'img/banner1.jpg' %}" class="d-block w-100" alt="Banner 1">
+
+        </div>
+
+
+        <div class="carousel-item">
+
+            <img src="{% static 'img/banner2.jpg' %}" class="d-block w-100" alt="Banner 2">
+
+        </div>
+
+
+        <div class="carousel-item">
+
+            <img src="{% static 'img/banner3.jpg' %}" class="d-block w-100" alt="Banner 3">
+
+        </div>
+
+    </div>
+
+
+    <!-- Previous Button -->
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+
+        <span class="carousel-control-prev-icon"></span>
+
+    </button>
+
+
+    <!-- Next Button -->
+
+    <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+
+        <span class="carousel-control-next-icon"></span>
+
+    </button>
+
+</div>
+
+
+
+<!-- ==================== Categories Section ==================== -->
+
+<section class="py-4">
+
+    <div class="container">
+
+        <div class="row text-center g-3">
+
+
+            <!-- Mobile -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/mobile.png' %}" alt="Mobiles" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Mobiles
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Laptop -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/laptop.png' %}" alt="Laptops" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Laptops
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Fashion -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/fashion.png' %}" alt="Fashion" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Fashion
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- TV -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/tv.png' %}" alt="Televisions" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        TV
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Furniture -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/furniture.png' %}" alt="Furniture" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Furniture
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Toys -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/toys.png' %}" alt="Toys" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Toys
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Grocery -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/grocery.png' %}" alt="Grocery" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Grocery
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Beauty -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="category-card">
+
+                    <img src="{% static 'img/categories/beauty.png' %}" alt="Beauty" class="img-fluid">
+
+                    <h6 class="mt-2">
+                        Beauty
+                    </h6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================== Featured Products ==================== -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <!-- Section Heading -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h3 class="fw-bold mb-0">
+                Featured Products
+            </h3>
+
+            <a href="#" class="btn btn-primary">
+                View All
+            </a>
+
+        </div>
+
+
+        <!-- Featured Products Slider -->
+
+        <div id="featuredSlider" class="splide" aria-label="Featured Products">
+
+            <div class="splide__track">
+
+                <ul class="splide__list">
+
+                    {% for product in featured_products %}
+
+                    <li class="splide__slide">
+
+                        <div class="card product-card h-100 border-0 shadow-sm position-relative">
+
+
+                            <!-- Wishlist Icon -->
+
+                            <!-- Wishlist Icon -->
+
+                            <button type="button"
+                                class="wishlist-btn {% if product.id in wishlist_product_ids %}active{% endif %}"
+                                data-product-id="{{ product.id }}"
+                                title="{% if product.id in wishlist_product_ids %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}">
+
+                                <i
+                                    class="{% if product.id in wishlist_product_ids %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
+
+                            </button>
+
+                            <!-- Product Image -->
+
+                            {% if product.image %}
+
+                            <a href="{% url 'product_detail' product.id %}">
+
+                                <img src="{{ product.image.url }}" class="card-img-top product-image"
+                                    alt="{{ product.name }}">
+
+                            </a>
+
+                            {% endif %}
+
+
+                            <!-- Product Details -->
+
+                            <div class="card-body">
+
+                                <h5 class="card-title">
+
+                                    <a href="{% url 'product_detail' product.id %}"
+                                        class="text-decoration-none text-dark">
+
+                                        {{ product.name }}
+
+                                    </a>
+
+                                </h5>
+
+
+                                <p class="text-muted">
+
+                                    {{ product.description|truncatewords:8 }}
+
+                                </p>
+
+
+                                <h5 class="fw-bold">
+
+                                    ₹{{ product.price }}
+
+                                </h5>
+
+
+                                <!-- Add To Cart -->
+
+                                {% if product.stock > 0 %}
+
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary w-100 mt-2">
+
+                                    <i class="fa-solid fa-cart-shopping"></i>
+
+                                    Add to Cart
+
+                                </a>
+
+                                {% else %}
+
+                                <button class="btn btn-secondary w-100 mt-2" disabled>
+
+                                    <i class="fa-solid fa-ban"></i>
+
+                                    Out of Stock
+
+                                </button>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </li>
+
+                    {% empty %}
+
+                    <li class="splide__slide">
+
+                        <div class="text-center py-5">
+
+                            <p class="text-muted">
+                                No featured products available.
+                            </p>
+
+                        </div>
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ==================== Offer Banner ==================== -->
+
+<section class="py-5">
+
+    <div class="container">
+
+
+        <div class="offer-banner rounded-3 overflow-hidden">
+
+
+            <div class="row align-items-center">
+
+
+                <div class="col-md-8">
+
+
+                    <div class="p-5">
+
+
+                        <h2 class="fw-bold">
+
+                            Big Shopping Sale
+
+                        </h2>
+
+
+                        <p class="fs-5 mb-4">
+
+                            Get amazing deals on Mobiles, Laptops,
+                            Fashion and Electronics.
+
+                        </p>
+
+
+                        <a href="#" class="btn btn-dark px-4">
+
+                            Shop Now
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 text-center">
+
+                    <i class="fa-solid fa-tags offer-icon"></i>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================== Latest Products ==================== -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+            <h3 class="fw-bold mb-0">
+
+                Latest Products
+
+            </h3>
+
+
+            <a href="#" class="btn btn-primary">
+
+                View All
+
+            </a>
+
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            {% for product in latest_products %}
+
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+
+                <div class="card product-card h-100 border-0 shadow-sm position-relative">
+
+
+                    <!-- Wishlist Icon -->
+
+                    <button type="button"
+                        class="wishlist-btn {% if product.id in wishlist_product_ids %}active{% endif %}"
+                        data-product-id="{{ product.id }}"
+                        title="{% if product.id in wishlist_product_ids %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}">
+
+                        <i
+                            class="{% if product.id in wishlist_product_ids %}fa-solid{% else %}fa-regular{% endif %} fa-heart"></i>
+
+                    </button>
+
+                    <!-- Product Image -->
+
+                    {% if product.image %}
+
+                    <a href="{% url 'product_detail' product.id %}">
+
+                        <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}">
+
+                    </a>
+
+                    {% endif %}
+
+
+                    <!-- Product Details -->
+
+                    <div class="card-body">
+
+
+                        <h5 class="card-title">
+
+                            <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark">
+
+                                {{ product.name }}
+
+                            </a>
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            {{ product.description|truncatewords:8 }}
+
+                        </p>
+
+
+                        <h5 class="fw-bold">
+
+                            ₹{{ product.price }}
+
+                        </h5>
+
+
+                        <!-- Add To Cart -->
+
+                        {% if product.stock > 0 %}
+
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary w-100 mt-2">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            Add to Cart
+
+                        </a>
+
+
+                        {% else %}
+
+
+                        <button class="btn btn-secondary w-100 mt-2" disabled>
+
+                            <i class="fa-solid fa-ban"></i>
+
+                            Out of Stock
+
+                        </button>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% empty %}
+
+
+            <div class="col-12 text-center">
+
+                <p class="text-muted">
+
+                    No products available.
+
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================== Brands Section ==================== -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+
+        <div class="text-center mb-4">
+
+            <h3 class="fw-bold">
+                Popular Brands
+            </h3>
+
+
+            <p class="text-muted">
+
+                Shop from your favourite brands
+
+            </p>
+
+        </div>
+
+
+        <div class="row g-3 justify-content-center">
+
+
+            <!-- Apple -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-brands fa-apple"></i>
+
+                    <h6>
+                        Apple
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Samsung -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-mobile-screen"></i>
+
+                    <h6>
+                        Samsung
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Sony -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-tv"></i>
+
+                    <h6>
+                        Sony
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- HP -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-laptop"></i>
+
+                    <h6>
+                        HP
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Dell -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-computer"></i>
+
+                    <h6>
+                        Dell
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Lenovo -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-laptop"></i>
+
+                    <h6>
+                        Lenovo
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Boat -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-headphones"></i>
+
+                    <h6>
+                        Boat
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+            <!-- Xiaomi -->
+
+            <div class="col-6 col-sm-4 col-md-3 col-lg">
+
+                <div class="brand-card">
+
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                    <h6>
+                        Xiaomi
+                    </h6>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==================== Newsletter Section ==================== -->
+
+<section class="newsletter-section py-5">
+
+    <div class="container">
+
+
+        <div class="row align-items-center">
+
+
+            <div class="col-md-6 mb-3 mb-md-0">
+
+
+                <h3 class="fw-bold">
+
+                    Stay Updated!
+
+                </h3>
+
+
+                <p class="mb-0">
+
+                    Subscribe to get the latest offers,
+                    deals and new products.
+
+                </p>
+
+
+            </div>
+
+
+            <div class="col-md-6">
+
+
+                <form class="d-flex">
+
+
+                    <input type="email" class="form-control me-2" placeholder="Enter your email address" required>
+
+
+                    <button type="submit" class="btn btn-dark px-4">
+
+                        Subscribe
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        new Splide('#featuredSlider', {
+            perPage: 4,
+            perMove: 1,
+            gap: '20px',
+            pagination: false,
+            arrows: true,
+            breakpoints: {
+                992: {
+                    perPage: 3,
+                },
+                768: {
+                    perPage: 2,
+                },
+                576: {
+                    perPage: 1,
+                },
+            },
+        }).mount();
+
+    });
+</script>
+
+{% endblock %}

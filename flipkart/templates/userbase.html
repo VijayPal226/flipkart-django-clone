@@ -1,0 +1,484 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+    My Account
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+    /* =================================
+       USER ACCOUNT LAYOUT
+    ================================= */
+
+    .user-account-wrapper {
+        width : 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 24px 12px;
+    }
+
+
+    .user-account-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+
+    /* =================================
+       SIDEBAR
+    ================================= */
+
+    .user-sidebar {
+        background: #ffffff;
+        border: 1px solid #e9edf2;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+
+        position: sticky;
+        top: 90px;
+    }
+
+
+    /* USER PROFILE BOX */
+
+    .user-sidebar-profile {
+        padding: 15px;
+        margin-bottom: 12px;
+
+        background: #f8faff;
+
+        border-radius: 13px;
+    }
+
+
+    .user-sidebar-avatar {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #0d6efd;
+        color: #ffffff;
+
+        border-radius: 50%;
+
+        font-size: 19px;
+        font-weight: 700;
+
+        margin-bottom: 10px;
+    }
+
+
+    .user-sidebar-profile strong {
+        display: block;
+
+        font-size: 15px;
+        color: #212529;
+    }
+
+
+    .user-sidebar-profile small {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #6c757d;
+
+        font-size: 12px;
+
+        word-break: break-word;
+    }
+
+
+    /* =================================
+       SIDEBAR TITLE
+    ================================= */
+
+    .user-sidebar-title {
+        padding: 10px 12px;
+
+        color: #8a94a6;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.8px;
+    }
+
+
+    /* =================================
+       SIDEBAR LINKS
+    ================================= */
+
+    .user-sidebar-link {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 11px 12px;
+
+        margin-bottom: 4px;
+
+        border-radius: 10px;
+
+        text-decoration: none;
+
+        color: #495057;
+
+        font-size: 14px;
+
+        font-weight: 500;
+
+        transition: all 0.2s ease;
+    }
+
+
+    .user-sidebar-link i {
+        width: 20px;
+
+        text-align: center;
+
+        font-size: 15px;
+
+        color: #6c757d;
+
+        transition: all 0.2s ease;
+    }
+
+
+    .user-sidebar-link:hover {
+        background: #f1f6ff;
+
+        color: #0d6efd;
+
+        transform: translateX(2px);
+    }
+
+
+    .user-sidebar-link:hover i {
+        color: #0d6efd;
+    }
+
+
+    /* ACTIVE DASHBOARD */
+
+    .user-sidebar-link.active {
+        background: #eef5ff;
+
+        color: #0d6efd;
+
+        font-weight: 600;
+    }
+
+
+    .user-sidebar-link.active i {
+        color: #0d6efd;
+    }
+
+
+    /* =================================
+       DIVIDER
+    ================================= */
+
+    .user-sidebar-divider {
+        height: 1px;
+
+        background: #edf0f3;
+
+        margin: 12px 4px;
+    }
+
+
+    /* =================================
+       LOGOUT
+    ================================= */
+
+    .user-sidebar-link.logout {
+        color: #dc3545;
+    }
+
+
+    .user-sidebar-link.logout i {
+        color: #dc3545;
+    }
+
+
+    .user-sidebar-link.logout:hover {
+        background: #fff1f2;
+
+        color: #dc3545;
+    }
+
+
+    /* =================================
+       CONTENT
+    ================================= */
+
+    .user-account-content {
+        min-width: 0;
+    }
+
+
+    /* =================================
+       MOBILE
+    ================================= */
+
+    @media (max-width: 991px) {
+
+        .user-account-layout {
+            grid-template-columns: 220px 1fr;
+        }
+
+    }
+
+
+    @media (max-width: 768px) {
+
+        .user-account-wrapper {
+            padding: 20px 14px;
+        }
+
+
+        .user-account-layout {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+
+        .user-sidebar {
+            position: static;
+        }
+
+
+        .user-sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .user-sidebar-avatar {
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+
+
+        .user-sidebar-profile-info {
+            min-width: 0;
+        }
+
+    }
+
+</style>
+
+
+<div class="user-account-wrapper">
+
+    <div class="user-account-layout">
+
+
+        <!-- =================================
+             USER SIDEBAR
+        ================================= -->
+
+        <aside class="user-sidebar">
+
+
+            <!-- USER PROFILE -->
+
+            <div class="user-sidebar-profile">
+
+                <div class="user-sidebar-avatar">
+
+                    {% if request.user.first_name %}
+                        {{ request.user.first_name|first|upper }}
+                    {% else %}
+                        {{ request.user.username|first|upper }}
+                    {% endif %}
+
+                </div>
+
+
+                <div class="user-sidebar-profile-info">
+
+                    <strong>
+
+                        {% if request.user.first_name %}
+                            {{ request.user.first_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+
+                    </strong>
+
+
+                    <small>
+                        {{ request.user.email }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="user-sidebar-title">
+                My Account
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="{% url 'user_dashboard' %}"
+               class="user-sidebar-link {% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- ORDERS -->
+
+            <a href="{% url 'my_orders' %}"
+               class="user-sidebar-link {% if request.resolver_match.url_name == 'my_orders' %}active{% endif %}">
+
+                <i class="fa-solid fa-box"></i>
+
+                <span>
+                    My Orders
+                </span>
+
+            </a>
+
+
+            <!-- WISHLIST -->
+
+            <a href="{% url 'wishlist' %}"
+               class="user-sidebar-link">
+
+                <i class="fa-solid fa-heart"></i>
+
+                <span>
+                    My Wishlist
+                </span>
+
+            </a>
+
+
+            <!-- CART -->
+
+            <a href="{% url 'cart_detail' %}"
+               class="user-sidebar-link">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <span>
+                    My Cart
+                </span>
+
+            </a>
+
+
+            <div class="user-sidebar-divider"></div>
+
+
+            <!-- PROFILE -->
+
+            <div class="user-sidebar-title">
+                Profile Settings
+            </div>
+
+
+            <a href="{% url 'profile' %}"
+               class="user-sidebar-link">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+            <a href="{% url 'profile_edit' %}"
+               class="user-sidebar-link">
+
+                <i class="fa-solid fa-pen-to-square"></i>
+
+                <span>
+                    Edit Profile
+                </span>
+
+            </a>
+
+
+            <a href="{% url 'change_password' %}"
+               class="user-sidebar-link">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <span>
+                    Change Password
+                </span>
+
+            </a>
+
+
+            <div class="user-sidebar-divider"></div>
+
+
+            <!-- LOGOUT -->
+
+            <a href="{% url 'logout' %}"
+               class="user-sidebar-link logout">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </aside>
+
+
+        <!-- =================================
+             PAGE CONTENT
+        ================================= -->
+
+        <section class="user-account-content">
+
+            {% block user_content %}
+            {% endblock %}
+
+        </section>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+

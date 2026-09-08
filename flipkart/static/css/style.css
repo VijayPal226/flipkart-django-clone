@@ -1,0 +1,294 @@
+body{
+    background:#c4c5c5;
+}
+
+.navbar{
+    padding:12px 20px
+}
+
+.navbar-brand img{
+    height:40px;
+}
+
+.input-group{
+    max-width:700px;
+}
+
+.input-group input{
+    box-shadow:none;
+}
+
+.input-group-text{
+    color:#666;
+}
+
+.nav-link{
+    font-size:16px;
+    font-weight:500;
+    color:#212121 !important;
+    margin-left:15px;
+}
+
+.nav-link:hover{
+    color:#2874f0 !important;
+}
+
+.dropdown-menu{
+    border:none;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+/*<=======footer=======>*/
+
+footer{
+    background:#172337;
+}
+
+.footer-link{
+    color:#ddd;
+    text-decoration:none;
+    display:block;
+    margin-bottom:10px;
+    transition:.3s;
+}
+
+.footer-link:hover{
+    color:#ffc107;
+    padding-left:5px;
+}
+
+.social-icon{
+    display:inline-block;
+    width:40px;
+    height:40px;
+    line-height:40px;
+    text-align:center;
+    border-radius:50%;
+    background:#fff;
+    color:#172337;
+    margin-right:10px;
+    transition:.3s;
+}
+
+.social-icon:hover{
+    background:#ffc107;
+    color:#000;
+}
+
+footer p{
+    color:#ddd;
+}
+
+footer h5{
+    font-weight:600;
+}
+
+
+/*<=========Hero Slider=========>*/
+
+.carousel-item img{
+    height:500px;
+    object-fit:cover;
+}
+
+/*<====== categories Section ======>*/
+
+.category-card {
+    background: #ffffff;
+    padding: 15px 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.category-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.category-card h6 {
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+/*==== Featured Products ====*/
+
+.product-card {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.product-image {
+    height: 220px;
+    object-fit: contain;
+    padding: 15px;
+    background: #ffffff;
+}
+
+.product-card .card-title {
+    font-weight: 600;
+}
+
+/*==== Offer Banner ====*/
+
+.offer-banner {
+    background: linear-gradient(135deg, #2874f0, #5b9cff);
+    color: white;
+    min-height: 220px;
+}
+
+.offer-icon {
+    font-size: 100px;
+    opacity: 0.9;
+}
+
+.offer-banner .btn {
+    font-weight: 600;
+}
+
+/*======== Brands Section =======*/
+
+.brand-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.brand-card i {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.brand-card h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/*======== Newsletter Section ========*/
+
+.newsletter-section {
+    background: #f1f3f6;
+}
+
+.newsletter-section h3 {
+    margin-bottom: 8px;
+}
+
+.newsletter-section input {
+    height: 48px;
+}
+
+.newsletter-section button {
+    white-space: nowrap;
+}
+/* ===== Wishlist Button ===== */
+
+.wishlist-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    width: 40px;
+    height: 40px;
+
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #dc3545;
+    font-size: 20px;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    z-index: 10;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Hover */
+
+.wishlist-btn:hover {
+    background: #dc3545;
+    color: #ffffff;
+
+    transform: scale(1.1);
+}
+
+
+/* Wishlist Added */
+
+.wishlist-btn.active {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+
+/* Filled Heart */
+
+.wishlist-btn.active i {
+    color: #ffffff;
+}
+
+
+/* =========================
+   Wishlist Button
+========================= */
+
+.wishlist-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    color: #dc3545;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+}
+
+.wishlist-btn:hover {
+    transform: scale(1.08);
+    color: #fff;
+    background: #dc3545;
+}
+
+.wishlist-btn.active {
+    color: #fff;
+    background: #dc3545;
+}
+
+.wishlist-btn i {
+    font-size: 18px;
+}

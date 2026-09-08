@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="fw-bold mb-4">
+        Checkout 📦
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- Customer Details -->
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Delivery Details
+                    </h4>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input type="text"
+                                   name="full_name"
+                                   class="form-control"
+                                   placeholder="Enter your full name" required>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Mobile Number
+                            </label>
+
+                            <input type="tel"
+                                name="mobile"
+                                   class="form-control"
+                                   placeholder="Enter mobile number"required>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Email
+                            </label>
+
+                            <input type="email"
+                                name="email"
+                                   class="form-control"
+                                   placeholder="Enter email address" required>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            <textarea name="address" class="form-control"
+                                      rows="4"
+                                      placeholder="Enter delivery address" required></textarea>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    City
+                                </label>
+
+                                <input type="text"
+                                name= "city"
+                                       class="form-control"
+                                       placeholder="City"required>
+
+                            </div>
+
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    Pincode
+                                </label>
+
+                                <input type="text"
+                                name="pincode"
+                                       class="form-control"
+                                       placeholder="Pincode"required>
+
+                            </div>
+
+                        </div>
+
+                        <button type='submit' class="btn btn-primary w-100 btn-lg">Place Order</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Order Summary -->
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Order Summary
+                    </h4>
+
+
+                    {% for item in cart.items.all %}
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <div>
+
+                            <strong>
+                                {{ item.product.name }}
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+                                Qty: {{ item.quantity }}
+                            </small>
+
+                        </div>
+
+
+                        <span class="fw-bold">
+                            ₹{{ item.get_total_price }}
+                        </span>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <hr>
+
+
+                    <div class="d-flex justify-content-between">
+
+                        <span class="fw-bold">
+                            Total
+                        </span>
+
+                        <span class="fw-bold fs-5 text-success">
+                            ₹{{ cart.get_total_price }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

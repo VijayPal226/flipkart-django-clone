@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Product
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- PAGE HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                Edit Product
+            </h2>
+
+            <p class="text-muted mb-0">
+                Update product information
+            </p>
+
+        </div>
+
+
+        <a href="{% url 'product_detail' product.id %}"
+           class="btn btn-secondary">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Product
+
+        </a>
+
+    </div>
+
+
+    <!-- EDIT PRODUCT CARD -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <div class="row g-4">
+
+
+                    <!-- LEFT SIDE -->
+
+                    <div class="col-lg-6">
+
+
+                        <!-- PRODUCT NAME -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Product Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                value="{{ product.name }}"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Description
+                            </label>
+
+                            <textarea
+                                name="description"
+                                class="form-control"
+                                rows="6"
+                                required
+                            >{{ product.description }}</textarea>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Category
+                            </label>
+
+                            <select
+                                name="category"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    No Category
+                                </option>
+
+
+                                {% for category in categories %}
+
+                                    <option
+                                        value="{{ category.id }}"
+                                        {% if product.category_id == category.id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ category.name }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRICE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Price
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₹
+                                </span>
+
+                                <input
+                                    type="number"
+                                    name="price"
+                                    class="form-control"
+                                    value="{{ product.price }}"
+                                    step="0.01"
+                                    min="0"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- RIGHT SIDE -->
+
+                    <div class="col-lg-6">
+
+
+                        <!-- STOCK -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                name="stock"
+                                class="form-control"
+                                value="{{ product.stock }}"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- CURRENT IMAGE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Current Image
+                            </label>
+
+                            <div
+                                class="border rounded p-3 text-center"
+                                style="height:220px;"
+                            >
+
+                                {% if product.image %}
+
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        alt="{{ product.name }}"
+                                        style="
+                                            width:100%;
+                                            height:190px;
+                                            object-fit:contain;
+                                        "
+                                    >
+
+                                {% else %}
+
+                                    <div class="text-muted py-5">
+
+                                        <i class="fa-solid fa-image fa-3x mb-2"></i>
+
+                                        <div>
+                                            No Image
+                                        </div>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- NEW IMAGE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Change Product Image
+                            </label>
+
+                            <input
+                                type="file"
+                                name="image"
+                                class="form-control"
+                                accept="image/*"
+                            >
+
+                            <small class="text-muted">
+                                Leave empty to keep the current image.
+                            </small>
+
+                        </div>
+
+
+                        <!-- FEATURED -->
+
+                        <div class="form-check mb-4">
+
+                            <input
+                                type="checkbox"
+                                name="is_featured"
+                                class="form-check-input"
+                                id="is_featured"
+                                {% if product.is_featured %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-semibold"
+                                for="is_featured"
+                            >
+
+                                <i class="fa-solid fa-star text-warning"></i>
+
+                                Featured Product
+
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <hr class="my-4">
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a
+                        href="{% url 'product_detail' product.id %}"
+                        class="btn btn-secondary"
+                    >
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4"
+                    >
+
+                        <i class="fa-solid fa-save me-1"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

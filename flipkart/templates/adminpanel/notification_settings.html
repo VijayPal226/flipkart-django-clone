@@ -1,0 +1,381 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Notification Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Notification Settings
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage admin alerts and notification preferences
+            </p>
+        </div>
+
+        <a href="{% url 'admin_settings' %}"
+           class="btn btn-outline-secondary">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Settings
+
+        </a>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="alert alert-info border-0 shadow-sm">
+
+        <i class="fa-solid fa-circle-info me-2"></i>
+
+        Choose which notifications you want to receive
+        in your admin dashboard.
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="row g-4">
+
+            <!-- New Order -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="new_order"
+                                id="new_order"
+                                {% if notification.new_order %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="new_order">
+
+                                <i class="fa-solid fa-cart-shopping
+                                          text-primary me-2"></i>
+
+                                New Order Notification
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Receive an alert whenever a new customer
+                            places an order.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- New Customer -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="new_customer"
+                                id="new_customer"
+                                {% if notification.new_customer %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="new_customer">
+
+                                <i class="fa-solid fa-user-plus
+                                          text-success me-2"></i>
+
+                                New Customer Notification
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Get notified when a new customer
+                            registers on the website.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Low Stock -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="low_stock"
+                                id="low_stock"
+                                {% if notification.low_stock %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="low_stock">
+
+                                <i class="fa-solid fa-box-open
+                                          text-warning me-2"></i>
+
+                                Low Stock Alert
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Receive alerts when products reach
+                            low inventory levels.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Payment -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="payment_notification"
+                                id="payment_notification"
+                                {% if notification.payment_notification %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="payment_notification">
+
+                                <i class="fa-solid fa-credit-card
+                                          text-info me-2"></i>
+
+                                Payment Notification
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Get alerts related to customer
+                            payment activity.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="email_notifications"
+                                id="email_notifications"
+                                {% if notification.email_notifications %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="email_notifications">
+
+                                <i class="fa-solid fa-envelope
+                                          text-danger me-2"></i>
+
+                                Email Notifications
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Enable or disable admin email
+                            notification preferences.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Dashboard -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="dashboard_alerts"
+                                id="dashboard_alerts"
+                                {% if notification.dashboard_alerts %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="dashboard_alerts">
+
+                                <i class="fa-solid fa-bell
+                                          text-primary me-2"></i>
+
+                                Dashboard Alerts
+
+                            </label>
+
+                        </div>
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Show important alerts and updates
+                            inside the admin dashboard.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Save Section -->
+        <div class="card border-0 shadow-sm mt-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between
+                            align-items-center">
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Save Preferences
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Your notification preferences will be
+                            saved permanently.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4">
+
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

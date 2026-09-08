@@ -1,0 +1,620 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Order Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Order Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Order #{{ order.id }}
+            </h2>
+
+            <p class="text-muted mb-0">
+                Placed on {{ order.created_at|date:"d M Y, h:i A" }}
+            </p>
+        </div>
+
+
+        <!-- Order Status -->
+        <div>
+
+            {% if order.status == 'pending' %}
+
+                <span class="badge bg-warning text-dark px-3 py-2">
+                    Pending
+                </span>
+
+            {% elif order.status == 'processing' %}
+
+                <span class="badge bg-info text-dark px-3 py-2">
+                    Processing
+                </span>
+
+            {% elif order.status == 'shipped' %}
+
+                <span class="badge bg-primary px-3 py-2">
+                    Shipped
+                </span>
+
+            {% elif order.status == 'Delivered' %}
+
+                <span class="badge bg-success px-3 py-2">
+                    Delivered
+                </span>
+
+            {% elif order.status == 'cancelled' %}
+
+                <span class="badge bg-danger px-3 py-2">
+                    Cancelled
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-8">
+
+
+            <!-- ORDER ITEMS -->
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-box me-2 text-primary"></i>
+                        Order Items
+                    </h5>
+
+
+                    {% for item in order.items.all %}
+
+                    <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+
+                        <!-- Product Image -->
+                        <div
+                            style="
+                            width:80px;
+                            height:80px;
+                            flex-shrink:0;
+                            "
+                        >
+
+                            {% if item.product.image %}
+
+                                <img
+                                    src="{{ item.product.image.url }}"
+                                    alt="{{ item.product.name }}"
+                                    class="img-fluid rounded"
+                                    style="
+                                    width:80px;
+                                    height:80px;
+                                    object-fit:contain;
+                                    "
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="bg-light rounded d-flex align-items-center justify-content-center"
+                                    style="
+                                    width:80px;
+                                    height:80px;
+                                    "
+                                >
+
+                                    <i class="fa-solid fa-image text-muted"></i>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Product Details -->
+                        <div class="ms-3 flex-grow-1">
+
+                            <h6 class="fw-bold mb-1">
+                                {{ item.product.name }}
+                            </h6>
+
+                            <p class="text-muted small mb-1">
+                                Price: ₹{{ item.price }}
+                            </p>
+
+                            <p class="text-muted small mb-0">
+                                Quantity: {{ item.quantity }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- Item Total -->
+                        <div class="text-end">
+
+                            <strong>
+                                ₹{{ item.get_total_price }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="text-center py-4">
+
+                        <i class="fa-solid fa-box-open fa-2x text-muted mb-3"></i>
+
+                        <p class="text-muted mb-0">
+                            No items found in this order.
+                        </p>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <!-- TOTAL -->
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+
+                        <h5 class="fw-bold mb-0">
+                            Total Amount
+                        </h5>
+
+                        <h4 class="fw-bold text-primary mb-0">
+                            ₹{{ order.total_amount }}
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ORDER TRACKING -->
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-truck me-2 text-primary"></i>
+                        Order Tracking
+                    </h5>
+
+
+                    {% if order.status != 'cancelled' %}
+
+                    <div class="row text-center">
+
+
+                        <!-- Pending -->
+                        <div class="col">
+
+                            <div
+                                class="
+                                rounded-circle
+                                mx-auto
+                                mb-2
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                {% if order.status == 'pending' or order.status == 'processing' or order.status == 'shipped' or order.status == 'Delivered' %}
+                                bg-primary text-white
+                                {% else %}
+                                bg-light text-muted
+                                {% endif %}
+                                "
+                                style="width:50px;height:50px;"
+                            >
+
+                                <i class="fa-solid fa-clock"></i>
+
+                            </div>
+
+                            <small class="fw-semibold">
+                                Pending
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- Processing -->
+                        <div class="col">
+
+                            <div
+                                class="
+                                rounded-circle
+                                mx-auto
+                                mb-2
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                {% if order.status == 'processing' or order.status == 'shipped' or order.status == 'Delivered' %}
+                                bg-primary text-white
+                                {% else %}
+                                bg-light text-muted
+                                {% endif %}
+                                "
+                                style="width:50px;height:50px;"
+                            >
+
+                                <i class="fa-solid fa-gears"></i>
+
+                            </div>
+
+                            <small class="fw-semibold">
+                                Processing
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- Shipped -->
+                        <div class="col">
+
+                            <div
+                                class="
+                                rounded-circle
+                                mx-auto
+                                mb-2
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                {% if order.status == 'shipped' or order.status == 'Delivered' %}
+                                bg-primary text-white
+                                {% else %}
+                                bg-light text-muted
+                                {% endif %}
+                                "
+                                style="width:50px;height:50px;"
+                            >
+
+                                <i class="fa-solid fa-truck"></i>
+
+                            </div>
+
+                            <small class="fw-semibold">
+                                Shipped
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- Delivered -->
+                        <div class="col">
+
+                            <div
+                                class="
+                                rounded-circle
+                                mx-auto
+                                mb-2
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                {% if order.status == 'Delivered' %}
+                                bg-success text-white
+                                {% else %}
+                                bg-light text-muted
+                                {% endif %}
+                                "
+                                style="width:50px;height:50px;"
+                            >
+
+                                <i class="fa-solid fa-check"></i>
+
+                            </div>
+
+                            <small class="fw-semibold">
+                                Delivered
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="alert alert-danger mb-0">
+
+                        <i class="fa-solid fa-circle-xmark me-2"></i>
+
+                        This order has been cancelled.
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-4">
+
+
+            <!-- DELIVERY DETAILS -->
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+                        Delivery Details
+                    </h5>
+
+
+                    <!-- Name -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Full Name
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.full_name }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Mobile -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Mobile
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.mobile }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Email
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.email }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Address -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Address
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.address }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- City -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            City
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.city }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Pincode -->
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Pincode
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ order.pincode }}
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ADMIN STATUS UPDATE -->
+                    {% if request.user.is_staff %}
+
+                    <hr class="my-4">
+
+                    <h6 class="fw-bold mb-3">
+
+                        <i class="fa-solid fa-gear me-1"></i>
+
+                        Update Order Status
+
+                    </h6>
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'update_order_status' order.id %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <div class="input-group">
+
+                            <select
+                                name="status"
+                                class="form-select"
+                            >
+
+                                <option
+                                    value="pending"
+                                    {% if order.status == 'pending' %}selected{% endif %}
+                                >
+                                    Pending
+                                </option>
+
+
+                                <option
+                                    value="processing"
+                                    {% if order.status == 'processing' %}selected{% endif %}
+                                >
+                                    Processing
+                                </option>
+
+
+                                <option
+                                    value="shipped"
+                                    {% if order.status == 'shipped' %}selected{% endif %}
+                                >
+                                    Shipped
+                                </option>
+
+
+                                <option
+                                    value="Delivered"
+                                    {% if order.status == 'Delivered' %}selected{% endif %}
+                                >
+                                    Delivered
+                                </option>
+
+
+                                <option
+                                    value="cancelled"
+                                    {% if order.status == 'cancelled' %}selected{% endif %}
+                                >
+                                    Cancelled
+                                </option>
+
+                            </select>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+
+                                <i class="fa-solid fa-check me-1"></i>
+
+                                Update
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    {% endif %}
+
+
+
+                    <!-- CUSTOMER CANCEL ORDER -->
+                    {% if not request.user.is_staff %}
+
+                        {% if order.status == 'pending' or order.status == 'processing' %}
+
+                        <hr class="my-4">
+
+                        <form
+                            method="POST"
+                            action="{% url 'cancel_order' order.id %}"
+                            class="mb-3"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-danger w-100"
+                                onclick="return confirm('Are you sure you want to cancel this order?');"
+                            >
+
+                                <i class="fa-solid fa-xmark me-1"></i>
+
+                                Cancel Order
+
+                            </button>
+
+                        </form>
+
+                        {% endif %}
+
+                    {% endif %}
+
+
+
+                    <!-- BACK BUTTON -->
+
+                    {% if request.user.is_staff %}
+
+                    <a
+                        href="{% url 'admin_orders' %}"
+                        class="btn btn-outline-primary w-100"
+                    >
+
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+
+                        Back to Orders
+
+                    </a>
+
+                    {% else %}
+
+                    <a
+                        href="{% url 'my_orders' %}"
+                        class="btn btn-outline-primary w-100"
+                    >
+
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+
+                        Back to My Orders
+
+                    </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

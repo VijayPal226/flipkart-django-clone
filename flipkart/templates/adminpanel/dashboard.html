@@ -1,0 +1,2077 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* ======= PAGE ======= */
+
+    .admin-dashboard {
+        min-height: 100vh;
+        background: #f5f7fb;
+        margin: -24px;
+    }
+
+
+    /* ======= SIDEBAR ====== */
+
+    .admin-sidebar {
+        min-height: 100vh;
+        background: #111827;
+        color: #fff;
+        position: sticky;
+        top: 0;
+    }
+
+    .admin-logo {
+        height: 76px;
+        display: flex;
+        align-items: center;
+        padding: 0 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .admin-logo-box {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        box-shadow: 0 6px 15px rgba(37, 99, 235, .3);
+    }
+
+    .admin-logo-text {
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .sidebar-content {
+        padding: 22px 12px;
+    }
+
+    .menu-label {
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+        padding: 0 14px;
+        margin: 8px 0 12px;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        color: #cbd5e1;
+        text-decoration: none;
+        padding: 12px 14px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .sidebar-link i {
+        width: 20px;
+        text-align: center;
+    }
+
+    .sidebar-link:hover {
+        background: #1e293b;
+        color: white;
+    }
+
+    .sidebar-link.active {
+        background: #2563eb;
+        color: white;
+        box-shadow: 0 6px 18px rgba(37, 99, 235, .25);
+    }
+
+    .sidebar-profile {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 18px;
+        border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .profile-icon {
+        width: 40px;
+        height: 40px;
+        background: #2563eb;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    /* ======== MAIN ===== */
+
+    .dashboard-main {
+        padding: 25px 30px;
+    }
+
+
+    /* ======== TOPBAR ======== */
+
+    .topbar {
+        background: white;
+        border-radius: 15px;
+        padding: 13px 18px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, .04);
+        margin-bottom: 25px;
+    }
+
+    .search-box {
+        width: 280px;
+        position: relative;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 13px;
+        top: 12px;
+        color: #94a3b8;
+    }
+
+    .search-box input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 9px;
+        padding: 9px 12px 9px 38px;
+        outline: none;
+        font-size: 13px;
+    }
+
+    .search-box input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+    }
+
+    .notification-btn {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #e5e7eb;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #475569;
+    }
+
+
+    /* ========= WELCOME BANNER ========= */
+
+    .welcome-banner {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg,
+                #2563eb,
+                #4f46e5 55%,
+                #7c3aed);
+        color: white;
+        border-radius: 18px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 12px 30px rgba(37, 99, 235, .18);
+    }
+
+    .welcome-banner h2 {
+        font-size: 25px;
+        font-weight: 750;
+        margin-bottom: 7px;
+    }
+
+    .welcome-banner p {
+        opacity: .85;
+        margin-bottom: 20px;
+    }
+
+    .welcome-btn {
+        background: white;
+        color: #2563eb;
+        border: none;
+        border-radius: 9px;
+        padding: 9px 16px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .welcome-decoration {
+        position: absolute;
+        right: 50px;
+        top: -70px;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .welcome-icon {
+        position: absolute;
+        right: 85px;
+        bottom: 20px;
+        font-size: 70px;
+        opacity: .13;
+    }
+
+
+    /* =========== STAT CARDS ============== */
+
+    .stat-card {
+        background: white;
+        border: 1px solid #edf0f5;
+        border-radius: 16px;
+        padding: 21px;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, .035);
+        transition: .25s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
+    }
+
+    .stat-icon {
+        width: 49px;
+        height: 49px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .stat-blue {
+        background: #eaf1ff;
+        color: #2563eb;
+    }
+
+    .stat-green {
+        background: #e8f8ef;
+        color: #16a34a;
+    }
+
+    .stat-orange {
+        background: #fff1df;
+        color: #ea580c;
+    }
+
+    .stat-red {
+        background: #ffe8e8;
+        color: #dc2626;
+    }
+
+    .stat-purple {
+        background: #f2eaff;
+        color: #7c3aed;
+    }
+
+    .stat-title {
+        color: #64748b;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .stat-number {
+        color: #111827;
+        font-size: 25px;
+        font-weight: 750;
+    }
+
+
+    /* ========= CONTENT BOX ========= */
+
+    .content-box {
+        background: white;
+        border: 1px solid #edf0f5;
+        border-radius: 16px;
+        padding: 23px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, .035);
+    }
+
+    .box-title {
+        color: #111827;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .box-subtitle {
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+
+    /*========== ORDER STATUS ======== */
+
+    .status-card {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid #eef2f7;
+        transition: .2s;
+    }
+
+    .status-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .status-icon {
+        width: 37px;
+        height: 37px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .status-number {
+        font-size: 22px;
+        font-weight: 750;
+    }
+
+
+    /* ======= QUICK ACTION ======== */
+
+    .quick-action {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: #111827;
+        padding: 12px;
+        border: 1px solid #edf0f5;
+        border-radius: 11px;
+        margin-bottom: 9px;
+        transition: .2s;
+    }
+
+    .quick-action:hover {
+        color: #2563eb;
+        border-color: #bfdbfe;
+        background: #f8fbff;
+    }
+
+    .quick-icon {
+        width: 39px;
+        height: 39px;
+        border-radius: 10px;
+        background: #eaf1ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quick-action strong {
+        display: block;
+        font-size: 13px;
+    }
+
+    .quick-action small {
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+
+    /* ======== RECENT ORDERS ======== */
+
+    .recent-orders-table {
+        white-space: nowrap;
+    }
+
+    .recent-orders-table thead th {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .recent-orders-table tbody td {
+        font-size: 13px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .recent-orders-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .customer-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #eaf1ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+    }
+
+
+    /* ======= INVENTORY ========== */
+
+    .inventory-alert {
+        border-radius: 12px;
+        padding: 17px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+    }
+
+    .inventory-count {
+        font-size: 27px;
+        font-weight: 750;
+        color: #dc2626;
+    }
+
+    .low-stock-box {
+        border: 1px solid #fed7aa;
+        background: #fffaf5;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .low-stock-box table th {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .low-stock-box table td {
+        font-size: 13px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .low-stock-box table tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* ========= MOBILE ======== */
+
+    @media (max-width: 991px) {
+
+        .admin-dashboard {
+            margin: -12px;
+        }
+
+        .admin-sidebar {
+            min-height: auto;
+            position: relative;
+        }
+
+        .sidebar-profile {
+            position: relative;
+        }
+
+        .sidebar-content {
+            display: flex;
+            overflow-x: auto;
+            gap: 5px;
+        }
+
+        .menu-label {
+            display: none;
+        }
+
+        .sidebar-link {
+            white-space: nowrap;
+        }
+
+        .dashboard-main {
+            padding: 18px;
+        }
+
+        .search-box {
+            width: 180px;
+        }
+    }
+
+    @media (max-width: 575px) {
+
+        .search-box {
+            display: none;
+        }
+
+        .welcome-banner {
+            padding: 23px;
+        }
+
+        .welcome-icon {
+            display: none;
+        }
+    }
+</style>
+
+
+<div class="admin-dashboard">
+
+    <div class="container-fluid">
+
+        <div class="row g-0">
+
+
+            <!-- ======= SIDEBAR ====== -->
+
+            <div class="col-lg-2">
+
+                <div class="admin-sidebar">
+
+                    <!-- Logo -->
+
+                    <div class="admin-logo">
+
+                        <div class="admin-logo-box">
+
+                            <i class="fa-solid fa-store"></i>
+
+                        </div>
+
+                        <div class="admin-logo-text">
+                            ShopAdmin
+                        </div>
+
+                    </div>
+
+
+                    <!-- Navigation -->
+
+                    <div class="sidebar-content">
+
+                        <div class="w-100">
+
+                            <div class="menu-label">
+                                Main Menu
+                            </div>
+
+
+                            <a href="{% url 'admin_dashboard' %}" class="sidebar-link active">
+
+                                <i class="fa-solid fa-chart-pie"></i>
+
+                                Dashboard
+
+                            </a>
+
+
+                            <a href="{% url 'admin_products' %}" class="sidebar-link">
+
+                                <i class="fa-solid fa-box"></i>
+
+                                Products
+
+                            </a>
+
+
+                            <a href="{% url 'admin_categories' %}" class="sidebar-link">
+                                <i class="fa-solid fa-layer-group"></i>
+                                Categories
+                            </a>
+
+                            <a href="{% url 'admin_orders'%}" class="sidebar-link">
+
+                                <i class="fa-solid fa-cart-shopping"></i>
+
+                                Orders
+
+                            </a>
+
+
+                            <a href="{% url 'admin_customers' %}" class="sidebar-link">
+
+                                <i class="fa-solid fa-users"></i>
+
+                                Customers
+
+                            </a>
+
+
+                            <div class="menu-label mt-4">
+                                Management
+                            </div>
+
+
+                            <a href="{% url 'admin_wishlist'%}" class="sidebar-link">
+
+                                <i class="fa-solid fa-heart"></i>
+
+                                Wishlist
+
+                            </a>
+
+
+                            <a href="{% url 'admin_reports' %}" class="sidebar-link">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                Reports
+
+                            </a>
+
+
+                            <a href="{% url 'admin_settings' %}" class="sidebar-link">
+
+                                <i class="fa-solid fa-gear"></i>
+
+                                Settings
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Admin Profile -->
+
+                    <div class="sidebar-profile">
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="profile-icon me-2">
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="fw-semibold">
+                                    Administrator
+                                </div>
+
+                                <small class="text-secondary">
+                                    Super Admin
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===== MAIN CONTENT ======= -->
+
+            <div class="col-lg-10">
+
+                <div class="dashboard-main">
+
+
+                    <!-- ===== TOP BAR ===== -->
+
+                    <div class="topbar">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="search-box">
+
+                                <i class="fa-solid fa-magnifying-glass"></i>
+
+                                <input type="text" placeholder="Search dashboard...">
+
+                            </div>
+
+
+                            <div class="d-flex align-items-center gap-3 ms-auto">
+
+                                <button class="notification-btn">
+
+                                    <i class="fa-regular fa-bell"></i>
+
+                                </button>
+
+
+                                <div class="d-none d-md-block text-end">
+
+                                    <div class="fw-semibold small">
+                                        Admin
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Administrator
+                                    </small>
+
+                                </div>
+
+
+                                <div class="profile-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!--==== WELCOME BANNER ======= -->
+
+                    <div class="welcome-banner">
+
+                        <div style="position:relative; z-index:2;">
+
+                            <h2>
+                                Welcome back, Admin! 👋
+                            </h2>
+
+                            <p>
+                                Here's what's happening with your store today.
+                            </p>
+
+                            <button class="welcome-btn">
+
+                                <i class="fa-solid fa-chart-line me-1"></i>
+
+                                View Overview
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="welcome-decoration"></div>
+
+                        <i class="fa-solid fa-chart-pie welcome-icon"></i>
+
+                    </div>
+
+
+                    <!-- ===== MAIN STATISTICS ==== -->
+
+                    <div class="row g-4">
+
+
+                        <!-- USERS -->
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+
+                            <a href="{% url 'admin_customers' %}" class="text-decoration-none">
+
+                                <div class="stat-card">
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <div>
+
+                                            <div class="stat-title">
+                                                Total Users
+                                            </div>
+
+                                            <div class="stat-number">
+                                                {{ total_users }}
+                                            </div>
+
+                                            <small class="text-primary">
+
+                                                <i class="fa-solid fa-arrow-right me-1"></i>
+
+                                                View Customers
+
+                                            </small>
+
+                                        </div>
+
+                                        <div class="stat-icon stat-blue">
+
+                                            <i class="fa-solid fa-users"></i>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                        <!-- PRODUCTS -->
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+
+                            <a href="{% url 'admin_products' %}" class="text-decoration-none">
+
+                                <div class="stat-card">
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <div>
+
+                                            <div class="stat-title">
+                                                Total Products
+                                            </div>
+
+                                            <div class="stat-number">
+                                                {{ total_products }}
+                                            </div>
+
+                                            <small class="text-success">
+                                                <i class="fa-solid fa-arrow-right me-1"></i>
+                                                View Products
+                                            </small>
+
+                                        </div>
+
+                                        <div class="stat-icon stat-green">
+
+                                            <i class="fa-solid fa-box"></i>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                        <!-- ORDERS -->
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+
+                            <div class="stat-card">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+
+
+                                        <div class="stat-title">
+                                            Total Orders
+                                        </div>
+
+
+                                        <a href="{% url 'admin_orders'%}" class=" text-decoration-none">
+
+                                            <div class="stat-number">
+                                                {{ total_orders }}
+                                            </div>
+
+                                        </a>
+
+                                    </div>
+
+                                    <div class="stat-icon stat-orange">
+
+                                        <i class="fa-solid fa-cart-shopping"></i>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- REVENUE -->
+
+                        <div class="col-12 col-sm-6 col-xl-3">
+
+                            <div class="stat-card">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+                                        <div class="stat-title">
+                                            Total Revenue
+                                        </div>
+
+                                        <div class="stat-number">
+                                            ₹{{ total_revenue }}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="stat-icon stat-red">
+
+                                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ======== SECONDARY STATISTICS ======== -->
+
+                    <div class="row g-4 mt-1">
+
+                        <!-- CATEGORIES -->
+
+                        <div class="col-md-4">
+                            <a href="{% url 'admin_categories' %}" class="text-decoration-none text-dark">
+
+                                <div class="stat-card">
+
+                                    <div class="d-flex justify-content-between">
+
+                                        <div>
+                                            <div class="stat-title">
+                                                Categories
+                                            </div>
+
+                                            <div class="stat-number">
+                                                {{ total_categories }}
+                                            </div>
+                                        </div>
+
+                                        <div class="stat-icon stat-purple">
+                                            <i class="fa-solid fa-layer-group"></i>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+                        </div>
+
+                        <!-- WISHLIST -->
+
+                        <div class="col-md-4">
+
+                            <div class="stat-card">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+                                        <div class="stat-title">
+                                            Wishlist Items
+                                        </div>
+
+                                        <a href="{% url 'admin_wishlist' %}" class="text-decoration-none">
+
+                                            <div class="stat-number">
+                                                {{ total_wishlist }}
+                                            </div>
+
+                                        </a>
+
+                                    </div>
+
+                                    <div class="stat-icon stat-red">
+
+                                        <i class="fa-solid fa-heart"></i>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FEATURED -->
+
+                        <div class="col-md-4">
+
+                            <div class="stat-card">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+                                        <div class="stat-title">
+                                            Featured Products
+                                        </div>
+
+                                        <a href="{% url 'admin_products' %}" class="text-decoration-none">
+
+                                            <div class="stat-number">
+                                                {{ featured_products }}
+                                            </div>
+
+                                        </a>
+
+                                    </div>
+
+                                    <div class="stat-icon stat-orange">
+
+                                        <i class="fa-solid fa-star"></i>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ======= SALES ANALYTICS ======= -->
+
+                    <div class="content-box mb-4 mt-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+
+                                <div class="box-title">
+                                    Sales Analytics
+                                </div>
+
+                                <div class="box-subtitle">
+                                    Monthly revenue overview
+                                </div>
+
+                            </div>
+
+                            <div class="stat-icon stat-blue">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <div style="height:320px;">
+
+                            <canvas id="salesChart"></canvas>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ======= ORDER OVERVIEW + QUICK ACTIONS ====== -->
+
+                    <div class="row g-4 mt-1">
+
+
+                        <!-- ORDER OVERVIEW -->
+
+                        <div class="col-xl-8">
+
+                            <div class="content-box">
+
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                    <div>
+
+                                        <div class="box-title">
+                                            Order Overview
+                                        </div>
+
+                                        <div class="box-subtitle">
+                                            Track your order status
+                                        </div>
+
+                                    </div>
+
+                                    <i class="fa-solid fa-chart-column text-primary"></i>
+
+                                </div>
+
+
+                                <div class="row g-3">
+
+
+                                    <!-- PENDING -->
+
+                                    <div class="col-6 col-md-3">
+
+                                        <div class="status-card">
+
+                                            <div class="status-icon bg-warning-subtle text-warning">
+
+                                                <i class="fa-solid fa-clock"></i>
+
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Pending
+                                            </small>
+
+                                            <div class="status-number text-warning">
+                                                {{ pending_orders }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- PROCESSING -->
+
+                                    <div class="col-6 col-md-3">
+
+                                        <div class="status-card">
+
+                                            <div class="status-icon bg-primary-subtle text-primary">
+
+                                                <i class="fa-solid fa-spinner"></i>
+
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Processing
+                                            </small>
+
+                                            <div class="status-number text-primary">
+                                                {{ processing_orders }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- SHIPPED -->
+
+                                    <div class="col-6 col-md-3">
+
+                                        <div class="status-card">
+
+                                            <div class="status-icon bg-info-subtle text-info">
+
+                                                <i class="fa-solid fa-truck"></i>
+
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Shipped
+                                            </small>
+
+                                            <div class="status-number text-info">
+                                                {{ shipped_orders }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- DELIVERED -->
+
+                                    <div class="col-6 col-md-3">
+
+                                        <div class="status-card">
+
+                                            <div class="status-icon bg-success-subtle text-success">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
+                                            </div>
+
+                                            <small class="text-muted">
+                                                Delivered
+                                            </small>
+
+                                            <div class="status-number text-success">
+                                                {{ delivered_orders }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- QUICK ACTIONS -->
+
+                        <div class="col-xl-4">
+
+                            <div class="content-box">
+
+                                <div class="box-title mb-3">
+                                    Quick Actions
+                                </div>
+
+
+                                <a href="{% url 'add_product'%}" class="quick-action">
+
+                                    <div class="quick-icon">
+
+                                        <i class="fa-solid fa-plus"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Add Product
+                                        </strong>
+
+                                        <small>
+                                            Create a new product
+                                        </small>
+
+                                    </div>
+
+                                </a>
+
+
+                                <a href="{% url 'admin_orders'%}" class="quick-action">
+
+                                    <div class="quick-icon">
+
+                                        <i class="fa-solid fa-cart-shopping"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Manage Orders
+                                        </strong>
+
+                                        <small>
+                                            View customer orders
+                                        </small>
+
+                                    </div>
+
+                                </a>
+
+
+                                <a href="{% url 'admin_customers' %}" class="quick-action">
+
+                                    <div class="quick-icon">
+
+                                        <i class="fa-solid fa-users"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Customers
+                                        </strong>
+
+                                        <small>
+                                            View all users
+                                        </small>
+
+                                    </div>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ====== RECENT ORDERS ====== -->
+
+                    <div class="content-box mt-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+                                <div class="box-title">
+                                    Recent Orders
+                                </div>
+
+                                <div class="box-subtitle">
+                                    Latest customer orders
+                                </div>
+                            </div>
+
+                            <i class="fa-solid fa-cart-shopping text-primary"></i>
+
+                        </div>
+
+
+                        <div class="table-responsive">
+
+                            <table class="table align-middle mb-0">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Order ID</th>
+
+                                        <th>Customer</th>
+
+                                        <th>Amount</th>
+
+                                        <th>Status</th>
+
+                                        <th>Date</th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for order in recent_orders %}
+
+                                    <tr>
+
+                                        <td>
+                                            <a href="{% url 'admin_order_detail' order.id %}"
+                                                class="text-decoration-none fw-bold">
+                                                #{{ order.id }}
+                                            </a>
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <div class="quick-icon me-2">
+
+                                                    <i class="fa-solid fa-user"></i>
+
+                                                </div>
+
+                                                <div>
+
+                                                    <strong>
+                                                        {{ order.user.username }}
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <strong>
+                                                ₹{{ order.total_amount }}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if order.status == 'pending' %}
+
+                                            <span class="badge bg-warning-subtle text-warning">
+                                                Pending
+                                            </span>
+
+                                            {% elif order.status == 'processing' %}
+
+                                            <span class="badge bg-primary-subtle text-primary">
+                                                Processing
+                                            </span>
+
+                                            {% elif order.status == 'shipped' %}
+
+                                            <span class="badge bg-info-subtle text-info">
+                                                Shipped
+                                            </span>
+
+                                            {% elif order.status == 'Delivered' %}
+
+                                            <span class="badge bg-success-subtle text-success">
+                                                Delivered
+                                            </span>
+
+                                            {% else %}
+
+                                            <span class="badge bg-secondary-subtle text-secondary">
+                                                {{ order.status }}
+                                            </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <small class="text-muted">
+
+                                                {{ order.created_at|date:"d M Y" }}
+
+                                            </small>
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% empty %}
+
+                                    <tr>
+
+                                        <td colspan="5" class="text-center text-muted py-4">
+
+                                            <i class="fa-solid fa-cart-shopping mb-2" style="font-size:25px;">
+                                            </i>
+
+                                            <br>
+
+                                            No orders found.
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ====== RECENT CUSTOMERS ====== -->
+
+                    <div class="content-box mt-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+                                <div class="box-title">
+                                    Recent Customers
+                                </div>
+
+                                <div class="box-subtitle">
+                                    Recently registered customers
+                                </div>
+                            </div>
+
+                            <div class="stat-icon stat-blue">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+
+                        </div>
+
+
+                        {% if recent_customers %}
+
+                        <div class="table-responsive">
+
+                            <table class="table align-middle mb-0">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>Customer</th>
+
+                                        <th>Email</th>
+
+                                        <th>Joined</th>
+
+                                        <th>Status</th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for customer in recent_customers %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                <div class="profile-icon me-2">
+
+                                                    <i class="fa-solid fa-user"></i>
+
+                                                </div>
+
+                                                <strong>
+                                                    {{ customer.username }}
+                                                </strong>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+                                            {{ customer.email }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ customer.date_joined|date:"d M Y" }}
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if customer.is_active %}
+
+                                            <span class="badge bg-success-subtle text-success">
+                                                Active
+                                            </span>
+
+                                            {% else %}
+
+                                            <span class="badge bg-danger-subtle text-danger">
+                                                Inactive
+                                            </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="text-center py-4 text-muted">
+
+                            <i class="fa-solid fa-users fa-2x mb-2"></i>
+
+                            <p class="mb-0">
+                                No customers found.
+                            </p>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ===== TOP SELLING PRODUCTS ===== -->
+
+                    <div class="content-box mt-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+                                <div class="box-title">
+                                    Top Selling Products
+                                </div>
+
+                                <div class="box-subtitle">
+                                    Best selling products in your store
+                                </div>
+                            </div>
+
+                            <div class="stat-icon stat-green">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+
+                        </div>
+
+
+                        {% if top_products %}
+
+                        <div class="table-responsive">
+
+                            <table class="table align-middle mb-0">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Total Sold</th>
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    {% for product in top_products %}
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>{{ forloop.counter }}</strong>
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="d-flex align-items-center">
+
+                                                {% if product.image %}
+
+                                                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="
+                                    width:45px;
+                                    height:45px;
+                                    object-fit:cover;
+                                    border-radius:8px;
+                                    margin-right:10px;
+                                ">
+
+                                                {% else %}
+
+                                                <div style="
+                                    width:45px;
+                                    height:45px;
+                                    border-radius:8px;
+                                    background:#f1f5f9;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    margin-right:10px;
+                                ">
+                                                    <i class="fa-solid fa-box text-muted"></i>
+                                                </div>
+
+                                                {% endif %}
+
+
+                                                <a href="{% url 'product_detail' product.id %}"
+                                                    class="text-decoration-none fw-bold text-dark">
+
+                                                    {{ product.name }}
+
+                                                </a>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+                                            ₹{{ product.price }}
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if product.stock == 0 %}
+
+                                            <span class="badge bg-danger-subtle text-danger">
+                                                Out of Stock
+                                            </span>
+
+                                            {% elif product.stock <= 5 %} <span
+                                                class="badge bg-warning-subtle text-warning">
+                                                {{ product.stock }} left
+                                                </span>
+
+                                                {% else %}
+
+                                                <span class="badge bg-success-subtle text-success">
+                                                    {{ product.stock }}
+                                                </span>
+
+                                                {% endif %}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="badge bg-primary-subtle text-primary">
+                                                {{ product.total_sold|default:0 }} sold
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="text-center py-4 text-muted">
+
+                            <i class="fa-solid fa-box-open fa-2x mb-2"></i>
+
+                            <p class="mb-0">
+                                No sales data available.
+                            </p>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ======= INVENTORY ALERT ====== -->
+
+                    <div class="content-box mt-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <div>
+                                <div class="box-title">
+                                    Inventory Alert
+                                </div>
+
+                                <div class="box-subtitle">
+                                    Products that need your attention
+                                </div>
+                            </div>
+
+                            <div class="stat-icon stat-orange">
+                                <i class="fa-solid fa-warehouse"></i>
+                            </div>
+
+                        </div>
+
+
+                        <!-- OUT OF STOCK -->
+
+                        <div class="inventory-alert mb-3">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div class="d-flex align-items-center">
+
+                                    <div class="quick-icon" style="background:#ffe8e8;color:#dc2626;">
+
+                                        <i class="fa-solid fa-circle-xmark"></i>
+
+                                    </div>
+
+                                    <div class="ms-3">
+
+                                        <h6 class="fw-bold mb-1">
+                                            Out of Stock Products
+                                        </h6>
+
+                                        <small class="text-muted">
+                                            Products currently having zero stock.
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="text-center">
+
+                                    <a href="{% url 'admin_products' %}" class="text-decoration-none">
+
+                                        <div class="inventory-count">
+                                            {{ out_of_stock }}
+                                        </div>
+
+                                    </a>
+
+                                    <small class="text-danger">
+                                        Products
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LOW STOCK -->
+
+                        <div class="low-stock-box">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div>
+
+                                    <h6 class="fw-bold mb-1">
+                                        Low Stock Products
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Products with 5 or fewer items remaining.
+                                    </small>
+
+                                </div>
+
+                                <i class="fa-solid fa-triangle-exclamation text-warning"></i>
+
+                            </div>
+
+
+                            {% if low_stock_products %}
+
+                            <div class="table-responsive">
+
+                                <table class="table align-middle mb-0">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>
+                                                Product
+                                            </th>
+
+                                            <th>
+                                                Stock
+                                            </th>
+
+                                            <th>
+                                                Status
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                        {% for product in low_stock_products %}
+
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="d-flex align-items-center">
+
+                                                    {% if product.image %}
+
+                                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="
+                                        width:42px;
+                                        height:42px;
+                                        object-fit:cover;
+                                        border-radius:8px;
+                                        margin-right:10px;
+                                    ">
+
+                                                    {% else %}
+
+                                                    <div style="
+                                        width:42px;
+                                        height:42px;
+                                        border-radius:8px;
+                                        background:#f1f5f9;
+                                        display:flex;
+                                        align-items:center;
+                                        justify-content:center;
+                                        margin-right:10px;
+                                    ">
+
+                                                        <i class="fa-solid fa-box text-muted"></i>
+
+                                                    </div>
+
+                                                    {% endif %}
+
+
+                                                    <a href="{% url 'product_detail' product.id %}"
+                                                        class="text-decoration-none fw-bold text-dark">
+                                                        {{ product.name }}
+                                                    </a>
+
+                                                </div>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                <strong>
+                                                    {{ product.stock }}
+                                                </strong>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                {% if product.stock == 1 %}
+
+                                                <span class="badge bg-danger-subtle text-danger">
+                                                    Critical
+                                                </span>
+
+                                                {% elif product.stock <= 3 %} <span
+                                                    class="badge bg-warning-subtle text-warning">
+                                                    Very Low
+                                                    </span>
+
+                                                    {% else %}
+
+                                                    <span class="badge bg-warning-subtle text-warning">
+                                                        Low Stock
+                                                    </span>
+
+                                                    {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="text-center py-4 text-muted">
+
+                                <i class="fa-solid fa-circle-check fa-2x text-success mb-2"></i>
+
+                                <p class="mb-0">
+                                    All products have sufficient stock.
+                                </p>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <!-- ======== FOOTER ========= -->
+
+                    <div class="text-center text-muted small py-4">
+
+                        <i class="fa-solid fa-shield-halved me-1"></i>
+
+                        ShopAdmin • Secure Administration Panel
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+         <!-- ===== CHART JS ======= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const chartLabels = JSON.parse('{{ chart_labels|escapejs }}');
+    const chartData = JSON.parse('{{ chart_data|escapejs }}');
+
+    const salesChart = document.getElementById('salesChart');
+
+    if (salesChart) {
+        new Chart(salesChart, {
+            type: 'line',
+
+            data: {
+                labels: chartLabels,
+
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: chartData,
+
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+
+                        pointRadius: 4,
+                        pointHoverRadius: 7
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return '₹' +
+                                    Number(context.raw).toLocaleString('en-IN');
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            callback: function (value) {
+                                return '₹' +
+                                    Number(value).toLocaleString('en-IN');
+                            }
+                        }
+                    },
+
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+{% endblock %}

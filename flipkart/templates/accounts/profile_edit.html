@@ -1,0 +1,616 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-4">
+
+        <h2 class="fw-bold mb-1">
+            Edit Profile
+        </h2>
+
+        <p class="text-muted mb-0">
+            Manage your personal information and profile details.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- LEFT PROFILE CARD -->
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body text-center p-4">
+
+
+                    <!-- PROFILE IMAGE -->
+
+                    <div class="mb-3">
+
+                        {% if profile.profile_image %}
+
+                            <img
+                                src="{{ profile.profile_image.url }}"
+                                alt="Profile"
+                                class="rounded-circle shadow"
+                                style="
+                                    width: 150px;
+                                    height: 150px;
+                                    object-fit: cover;
+                                    border: 5px solid #f1f3f5;
+                                "
+                            >
+
+                        {% else %}
+
+                            <div
+                                class="rounded-circle bg-light
+                                       d-flex align-items-center
+                                       justify-content-center
+                                       mx-auto shadow-sm"
+                                style="
+                                    width: 150px;
+                                    height: 150px;
+                                    border: 5px solid #f1f3f5;
+                                "
+                            >
+
+                                <i
+                                    class="fa-solid fa-user text-secondary"
+                                    style="font-size: 60px;"
+                                ></i>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+
+                    <h4 class="fw-bold mb-1">
+                        {{ request.user.username }}
+                    </h4>
+
+
+                    <!-- EMAIL -->
+
+                    <p class="text-muted mb-4">
+                        {{ request.user.email }}
+                    </p>
+
+
+                    <hr>
+
+
+                    <!-- ACCOUNT INFORMATION -->
+
+                    <div class="text-start mt-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div
+                                class="bg-light rounded-circle
+                                       d-flex align-items-center
+                                       justify-content-center me-3"
+                                style="width:42px;height:42px;"
+                            >
+
+                                <i class="fa-solid fa-user text-primary"></i>
+
+                            </div>
+
+                            <div>
+
+                                <small class="text-muted d-block">
+                                    Username
+                                </small>
+
+                                <span class="fw-semibold">
+                                    {{ request.user.username }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div
+                                class="bg-light rounded-circle
+                                       d-flex align-items-center
+                                       justify-content-center me-3"
+                                style="width:42px;height:42px;"
+                            >
+
+                                <i class="fa-solid fa-envelope text-primary"></i>
+
+                            </div>
+
+                            <div style="min-width:0;">
+
+                                <small class="text-muted d-block">
+                                    Email
+                                </small>
+
+                                <span
+                                    class="fw-semibold text-break"
+                                >
+                                    {{ request.user.email }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex align-items-center">
+
+                            <div
+                                class="bg-light rounded-circle
+                                       d-flex align-items-center
+                                       justify-content-center me-3"
+                                style="width:42px;height:42px;"
+                            >
+
+                                <i class="fa-solid fa-shield-halved text-success"></i>
+
+                            </div>
+
+                            <div>
+
+                                <small class="text-muted d-block">
+                                    Account Status
+                                </small>
+
+                                <span class="fw-semibold text-success">
+                                    Active
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RIGHT EDIT FORM -->
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-md-5">
+
+
+                    <!-- FORM HEADER -->
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <div
+                            class="bg-primary bg-opacity-10
+                                   rounded-circle d-flex
+                                   align-items-center
+                                   justify-content-center me-3"
+                            style="width:50px;height:50px;"
+                        >
+
+                            <i class="fa-solid fa-user-pen text-primary fs-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h4 class="fw-bold mb-1">
+                                Personal Information
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Update your profile information below.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="mb-4">
+
+
+                    <!-- FORM -->
+
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <!-- FULL NAME + PHONE -->
+
+                        <div class="row g-3">
+
+
+                            <!-- FULL NAME -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="full_name"
+                                    class="form-label fw-semibold"
+                                >
+                                    Full Name
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-user text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="full_name"
+                                        id="full_name"
+                                        class="form-control"
+                                        placeholder="Enter your full name"
+                                        value="{{ profile.full_name|default:'' }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PHONE -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="phone"
+                                    class="form-label fw-semibold"
+                                >
+                                    Phone Number
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-phone text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        id="phone"
+                                        class="form-control"
+                                        placeholder="Enter phone number"
+                                        value="{{ profile.phone|default:'' }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-envelope text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="email"
+                                        class="form-control bg-light"
+                                        value="{{ request.user.email }}"
+                                        readonly
+                                    >
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Email address cannot be changed here.
+                                </small>
+
+                            </div>
+
+
+                            <!-- ADDRESS -->
+
+                            <div class="col-12">
+
+                                <label
+                                    for="address"
+                                    class="form-label fw-semibold"
+                                >
+                                    Address
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span
+                                        class="input-group-text bg-light
+                                               align-items-start pt-2"
+                                    >
+                                        <i class="fa-solid fa-location-dot text-muted"></i>
+                                    </span>
+
+                                    <textarea
+                                        name="address"
+                                        id="address"
+                                        class="form-control"
+                                        rows="3"
+                                        placeholder="Enter your complete address"
+                                    >{{ profile.address|default:'' }}</textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CITY -->
+
+                            <div class="col-md-4">
+
+                                <label
+                                    for="city"
+                                    class="form-label fw-semibold"
+                                >
+                                    City
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-city text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        id="city"
+                                        class="form-control"
+                                        placeholder="City"
+                                        value="{{ profile.city|default:'' }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- STATE -->
+
+                            <div class="col-md-4">
+
+                                <label
+                                    for="state"
+                                    class="form-label fw-semibold"
+                                >
+                                    State
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-map text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="state"
+                                        id="state"
+                                        class="form-control"
+                                        placeholder="State"
+                                        value="{{ profile.state|default:'' }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PINCODE -->
+
+                            <div class="col-md-4">
+
+                                <label
+                                    for="pincode"
+                                    class="form-label fw-semibold"
+                                >
+                                    Pincode
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="fa-solid fa-location-crosshairs text-muted"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        name="pincode"
+                                        id="pincode"
+                                        class="form-control"
+                                        placeholder="Pincode"
+                                        value="{{ profile.pincode|default:'' }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PROFILE IMAGE -->
+
+                            <div class="col-12">
+
+                                <label
+                                    for="profile_image"
+                                    class="form-label fw-semibold"
+                                >
+                                    Profile Picture
+                                </label>
+
+                                <div class="border rounded-3 p-3 bg-light">
+
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div
+                                            class="rounded-circle bg-white
+                                                   d-flex align-items-center
+                                                   justify-content-center"
+                                            style="width:55px;height:55px;"
+                                        >
+
+                                            <i class="fa-solid fa-camera text-primary fs-5"></i>
+
+                                        </div>
+
+                                        <div class="flex-grow-1">
+
+                                            <input
+                                                type="file"
+                                                name="profile_image"
+                                                id="profile_image"
+                                                class="form-control"
+                                                accept="image/*"
+                                            >
+
+                                            <small class="text-muted">
+                                                JPG, PNG or other supported image formats.
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DIVIDER -->
+
+                        <hr class="my-4">
+
+
+                        <!-- ACTION BUTTONS -->
+
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                            <a
+                                href="{% url 'profile' %}"
+                                class="btn btn-light border px-4"
+                            >
+
+                                <i class="fa-solid fa-arrow-left me-2"></i>
+
+                                Cancel
+
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4"
+                            >
+
+                                <i class="fa-solid fa-check me-2"></i>
+
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY CARD -->
+
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div
+                            class="bg-warning bg-opacity-10
+                                   rounded-circle d-flex
+                                   align-items-center
+                                   justify-content-center me-3"
+                            style="width:45px;height:45px;"
+                        >
+
+                            <i class="fa-solid fa-lock text-warning"></i>
+
+                        </div>
+
+                        <div class="flex-grow-1">
+
+                            <h6 class="fw-bold mb-1">
+                                Want to change your password?
+                            </h6>
+
+                            <p class="text-muted mb-0 small">
+                                Keep your account secure by using a strong password.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="{% url 'change_password' %}"
+                            class="btn btn-outline-dark btn-sm"
+                        >
+                            Change Password
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

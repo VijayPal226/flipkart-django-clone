@@ -1,0 +1,483 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Payment Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Payment Settings
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage payment methods and transaction preferences
+            </p>
+        </div>
+
+        <a href="{% url 'admin_settings' %}"
+           class="btn btn-outline-secondary">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Settings
+
+        </a>
+
+    </div>
+
+
+    <!-- Security Notice -->
+    <div class="alert alert-warning border-0 shadow-sm">
+
+        <i class="fa-solid fa-shield-halved me-2"></i>
+
+        <strong>Security Notice:</strong>
+
+        Never share your payment gateway secret keys or
+        credentials publicly.
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="row g-4">
+
+
+            <!-- Payment System -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-4">
+
+                            <div
+                                class="bg-primary bg-opacity-10
+                                       text-primary rounded-circle
+                                       d-flex align-items-center
+                                       justify-content-center me-3"
+                                style="width:50px;height:50px;">
+
+                                <i class="fa-solid fa-credit-card fs-5"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Payment System
+                                </h5>
+
+                                <p class="text-muted mb-0">
+                                    Enable or disable online payments
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="payment_enabled"
+                                id="payment_enabled"
+                                {% if payment.payment_enabled %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-semibold"
+                                for="payment_enabled">
+
+                                Enable Payments
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Payment Mode -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold mb-3">
+
+                            <i class="fa-solid fa-flask
+                                      text-warning me-2"></i>
+
+                            Payment Mode
+
+                        </h5>
+
+
+                        <p class="text-muted small">
+                            Select whether the payment gateway should
+                            operate in testing or live mode.
+                        </p>
+
+
+                        <select
+                            name="payment_mode"
+                            class="form-select">
+
+                            <option value="test"
+                                {% if payment.payment_mode == 'test' %}
+                                    selected
+                                {% endif %}>
+                                Test Mode
+                            </option>
+
+                            <option value="live"
+                                {% if payment.payment_mode == 'live' %}
+                                    selected
+                                {% endif %}>
+                                Live Mode
+                            </option>
+
+                        </select>
+
+
+                        <div class="mt-3">
+
+                            {% if payment.payment_mode == 'live' %}
+
+                                <span class="badge bg-danger">
+                                    Live Payments Enabled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Test Mode
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Currency -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold mb-3">
+
+                            <i class="fa-solid fa-coins
+                                      text-success me-2"></i>
+
+                            Currency
+
+                        </h5>
+
+
+                        <p class="text-muted small">
+                            Select the default currency for your store.
+                        </p>
+
+
+                        <select
+                            name="currency"
+                            class="form-select">
+
+                            <option value="INR"
+                                {% if payment.currency == 'INR' %}
+                                    selected
+                                {% endif %}>
+                                Indian Rupee (INR)
+                            </option>
+
+                            <option value="USD"
+                                {% if payment.currency == 'USD' %}
+                                    selected
+                                {% endif %}>
+                                US Dollar (USD)
+                            </option>
+
+                            <option value="EUR"
+                                {% if payment.currency == 'EUR' %}
+                                    selected
+                                {% endif %}>
+                                Euro (EUR)
+                            </option>
+
+                            <option value="GBP"
+                                {% if payment.currency == 'GBP' %}
+                                    selected
+                                {% endif %}>
+                                British Pound (GBP)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Stripe -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="stripe_enabled"
+                                id="stripe_enabled"
+                                {% if payment.stripe_enabled %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="stripe_enabled">
+
+                                <i class="fa-brands fa-stripe
+                                          text-primary me-2"></i>
+
+                                Stripe Payments
+
+                            </label>
+
+                        </div>
+
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Enable Stripe as an online payment
+                            gateway.
+
+                        </p>
+
+
+                        <div class="mt-3">
+
+                            {% if payment.stripe_enabled %}
+
+                                <span class="badge bg-success">
+                                    Stripe Enabled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Stripe Disabled
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COD -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="form-check form-switch">
+
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                name="cod_enabled"
+                                id="cod_enabled"
+                                {% if payment.cod_enabled %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <label
+                                class="form-check-label fw-bold"
+                                for="cod_enabled">
+
+                                <i class="fa-solid fa-money-bill-wave
+                                          text-success me-2"></i>
+
+                                Cash on Delivery
+
+                            </label>
+
+                        </div>
+
+
+                        <p class="text-muted small mt-2 mb-0">
+
+                            Allow customers to pay when their
+                            order is delivered.
+
+                        </p>
+
+
+                        <div class="mt-3">
+
+                            {% if payment.cod_enabled %}
+
+                                <span class="badge bg-success">
+                                    COD Enabled
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    COD Disabled
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Gateway Information -->
+            <div class="col-lg-6">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold mb-3">
+
+                            <i class="fa-solid fa-lock
+                                      text-danger me-2"></i>
+
+                            Gateway Security
+
+                        </h5>
+
+
+                        <p class="text-muted small mb-3">
+
+                            Payment gateway credentials should be
+                            configured securely using environment
+                            variables.
+
+                        </p>
+
+
+                        <div class="bg-light rounded p-3">
+
+                            <div class="d-flex align-items-center">
+
+                                <i class="fa-solid fa-circle-check
+                                          text-success me-2"></i>
+
+                                <span class="small fw-semibold">
+                                    Secure configuration recommended
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Save -->
+        <div class="card border-0 shadow-sm mt-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between
+                            align-items-center">
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Save Payment Preferences
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Your payment settings will be saved
+                            permanently.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4">
+
+                        <i class="fa-solid fa-floppy-disk me-2"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+{% endblock %}
+

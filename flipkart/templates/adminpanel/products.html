@@ -1,0 +1,486 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-5">
+
+    <!-- ============================= -->
+    <!-- PAGE HEADER -->
+    <!-- ============================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Products
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage all products
+            </p>
+        </div>
+
+        <div class="badge bg-primary fs-6">
+            Total: {{ products|length }}
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SEARCH & FILTER -->
+    <!-- ============================= -->
+
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- SEARCH -->
+
+                    <div class="col-lg-5 col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Search Product
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="search"
+                                value="{{ search }}"
+                                class="form-control"
+                                placeholder="Search by product name..."
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Category
+                        </label>
+
+                        <select
+                            name="category"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            {% for cat in categories %}
+
+                                <option
+                                    value="{{ cat.id }}"
+                                    {% if category == cat.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ cat.name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- STOCK -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Stock
+                        </label>
+
+                        <select
+                            name="stock"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                All Stock
+                            </option>
+
+                            <option
+                                value="in_stock"
+                                {% if stock_status == 'in_stock' %}
+                                    selected
+                                {% endif %}
+                            >
+                                In Stock
+                            </option>
+
+                            <option
+                                value="low_stock"
+                                {% if stock_status == 'low_stock' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Low Stock
+                            </option>
+
+                            <option
+                                value="out_of_stock"
+                                {% if stock_status == 'out_of_stock' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Out of Stock
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="col-lg-2 col-md-6">
+
+                        <div class="d-flex gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                            >
+                                <i class="fa-solid fa-filter me-1"></i>
+                                Filter
+                            </button>
+
+                            <a
+                                href="{% url 'admin_products' %}"
+                                class="btn btn-outline-secondary"
+                                title="Reset Filters"
+                            >
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- PRODUCTS CARD -->
+    <!-- ============================= -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            {% if products %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <!-- TABLE HEADER -->
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Product</th>
+
+                            <th>Category</th>
+
+                            <th>Price</th>
+
+                            <th>Stock</th>
+
+                            <th>Featured</th>
+
+                            <th>Date</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <!-- TABLE BODY -->
+
+                    <tbody>
+
+                        {% for product in products %}
+
+                        <tr>
+
+                            <!-- NUMBER -->
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+
+                            <!-- PRODUCT -->
+
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    {% if product.image %}
+
+                                        <img
+                                            src="{{ product.image.url }}"
+                                            alt="{{ product.name }}"
+                                            style="
+                                                width:55px;
+                                                height:55px;
+                                                object-fit:cover;
+                                                border-radius:8px;
+                                                margin-right:12px;
+                                                border:1px solid #eee;
+                                            "
+                                        >
+
+                                    {% else %}
+
+                                        <div
+                                            style="
+                                                width:55px;
+                                                height:55px;
+                                                border-radius:8px;
+                                                background:#f1f5f9;
+                                                display:flex;
+                                                align-items:center;
+                                                justify-content:center;
+                                                margin-right:12px;
+                                            "
+                                        >
+
+                                            <i class="fa-solid fa-box text-muted"></i>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <div>
+
+                                        <strong>
+                                            {{ product.name }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- CATEGORY -->
+
+                            <td>
+
+                                {% if product.category %}
+
+                                    <span class="text-dark">
+                                        {{ product.category.name }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        No Category
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- PRICE -->
+
+                            <td>
+
+                                <strong>
+                                    ₹{{ product.price }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- STOCK -->
+
+                            <td>
+
+                                {% if product.stock == 0 %}
+
+                                    <span class="badge bg-danger">
+
+                                        <i class="fa-solid fa-circle-exclamation me-1"></i>
+
+                                        Out of Stock
+
+                                    </span>
+
+                                {% elif product.stock <= 5 %}
+
+                                    <span class="badge bg-warning text-dark">
+
+                                        <i class="fa-solid fa-triangle-exclamation me-1"></i>
+
+                                        {{ product.stock }} left
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-success">
+
+                                        <i class="fa-solid fa-check me-1"></i>
+
+                                        {{ product.stock }}
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- FEATURED -->
+
+                            <td>
+
+                                {% if product.is_featured %}
+
+                                    <span class="badge bg-primary">
+
+                                        <i class="fa-solid fa-star me-1"></i>
+
+                                        Featured
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+
+                                        Normal
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                {% if product.created_at %}
+
+                                    {{ product.created_at|date:"d M Y" }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+
+                            <td class="text-center">
+
+                                <a
+                                    href="{% url 'product_detail' product.id %}"
+                                    class="btn btn-sm btn-outline-primary"
+                                    title="View Product"
+                                >
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+                <!-- EMPTY -->
+
+                <div class="text-center py-5">
+
+                    <i
+                        class="fa-solid fa-box-open fa-3x text-muted mb-3"
+                    ></i>
+
+                    <h5>
+                        No Products Found
+                    </h5>
+
+                    <p class="text-muted">
+                        Try changing your search or filters.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_products' %}"
+                        class="btn btn-outline-primary"
+                    >
+                        <i class="fa-solid fa-rotate-left me-1"></i>
+                        Reset Filters
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

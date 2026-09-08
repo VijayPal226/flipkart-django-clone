@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-gear me-2"></i>
+                Settings
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage your store and admin panel settings
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Settings Grid -->
+    <div class="row g-4">
+
+
+        <!-- Admin Profile -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'admin_profile_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-primary-subtle text-primary">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Admin Profile
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Manage admin account
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Update your name, email, profile image
+                            and other account information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Store Information -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'store_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-success-subtle text-success">
+                                <i class="fa-solid fa-store"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Store Information
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Manage store details
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Configure store name, email, phone,
+                            address and contact information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Security -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'admin_security_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-danger-subtle text-danger">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Security
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Protect admin account
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Change password and manage
+                            administrator security settings.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Notifications -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'admin_notification_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-warning-subtle text-warning">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Notifications
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Manage alerts
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Control new order, low stock and
+                            customer notification alerts.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Payment -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'admin_payment_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-info-subtle text-info">
+                                <i class="fa-solid fa-credit-card"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Payment
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Configure payments
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Manage Cash on Delivery and
+                            online payment configuration.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Website -->
+        <div class="col-lg-4 col-md-6">
+
+            <a href="{% url 'admin_website_settings' %}" class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100 settings-card">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center mb-3">
+
+                            <div class="settings-icon bg-secondary-subtle text-secondary">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">
+                                    Website
+                                </h5>
+
+                                <p class="text-muted mb-0 small">
+                                    Website configuration
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p class="text-muted small mb-0">
+                            Manage website status,
+                            maintenance mode and general settings.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.settings-card {
+    border-radius: 16px;
+    transition: all 0.25s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.10) !important;
+}
+
+.settings-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+</style>
+
+{% endblock %}

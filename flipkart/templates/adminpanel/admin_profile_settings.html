@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-user-gear me-2"></i>
+                Admin Profile
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage your administrator account information
+            </p>
+        </div>
+
+        <a href="{% url 'admin_settings' %}"
+           class="btn btn-light border">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Settings
+
+        </a>
+
+    </div>
+
+
+    <!-- Messages -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                 role="alert">
+
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="row g-4">
+
+
+        <!-- Profile Card -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm profile-card">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="profile-avatar mx-auto mb-3">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold mb-1">
+
+                        {% if admin_user.get_full_name %}
+                            {{ admin_user.get_full_name }}
+                        {% else %}
+                            Administrator
+                        {% endif %}
+
+                    </h4>
+
+                    <p class="text-muted mb-3">
+                        @{{ admin_user.username }}
+                    </p>
+
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                        <i class="fa-solid fa-shield-halved me-1"></i>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Account Information -->
+
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-body p-4">
+
+                    <h6 class="fw-bold mb-3">
+                        <i class="fa-solid fa-circle-info me-2"></i>
+                        Account Information
+                    </h6>
+
+                    <div class="info-row">
+                        <span>Username</span>
+                        <strong>{{ admin_user.username }}</strong>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Email</span>
+                        <strong>{{ admin_user.email|default:"Not added" }}</strong>
+                    </div>
+
+                    <div class="info-row">
+                        <span>Staff Status</span>
+
+                        {% if admin_user.is_staff %}
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        {% else %}
+                            <span class="badge bg-danger">
+                                Inactive
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Edit Profile -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold mb-1">
+                            Personal Information
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Update your administrator account details.
+                        </p>
+
+                    </div>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <div class="row g-3">
+
+
+                            <!-- First Name -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    First Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="first_name"
+                                    class="form-control"
+                                    value="{{ admin_user.first_name }}"
+                                    placeholder="Enter first name"
+                                >
+
+                            </div>
+
+
+                            <!-- Last Name -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Last Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="last_name"
+                                    class="form-control"
+                                    value="{{ admin_user.last_name }}"
+                                    placeholder="Enter last name"
+                                >
+
+                            </div>
+
+
+                            <!-- Username -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Username
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="{{ admin_user.username }}"
+                                    readonly
+                                >
+
+                                <small class="text-muted">
+                                    Username cannot be changed here.
+                                </small>
+
+                            </div>
+
+
+                            <!-- Email -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="form-control"
+                                    value="{{ admin_user.email }}"
+                                    placeholder="Enter email address"
+                                    required
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a href="{% url 'admin_settings' %}"
+                               class="btn btn-light border">
+
+                                Cancel
+
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4">
+
+                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- Security Shortcut -->
+
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="security-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+
+                        <div class="ms-3">
+
+                            <h6 class="fw-bold mb-1">
+                                Account Security
+                            </h6>
+
+                            <p class="text-muted small mb-0">
+                                Keep your administrator account secure.
+                            </p>
+
+                        </div>
+
+                        <div class="ms-auto">
+
+                            <a href="{% url 'change_password' %}"
+                               class="btn btn-outline-primary">
+
+                                Change Password
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.profile-card {
+    border-radius: 16px;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f1f5f9;
+
+    color: #0d6efd;
+
+    font-size: 35px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eee;
+
+    gap: 15px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row span {
+    color: #6c757d;
+}
+
+.security-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    background: #eef4ff;
+    color: #0d6efd;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+.form-control {
+    min-height: 45px;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+}
+
+</style>
+
+{% endblock %}

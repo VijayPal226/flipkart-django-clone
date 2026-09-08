@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Wishlist
+{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="container">
+
+        <!-- Heading -->
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h2 class="fw-bold mb-0">
+                <i class="fa-solid fa-heart text-danger"></i>
+                My Wishlist
+            </h2>
+
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fa-solid fa-arrow-left"></i>
+                Continue Shopping
+            </a>
+
+        </div>
+
+
+        {% if wishlist_items %}
+
+        <div class="row g-4">
+
+            {% for item in wishlist_items %}
+
+            <div class="col-12 col-sm-6 col-lg-3">
+
+                <div class="card product-card h-100 border-0 shadow-sm">
+
+
+                    <!-- Product Image -->
+
+                    {% if item.product.image %}
+
+                    <a href="{% url 'product_detail' item.product.id %}">
+
+                        <img src="{{ item.product.image.url }}"
+                             class="card-img-top product-image"
+                             alt="{{ item.product.name }}">
+
+                    </a>
+
+                    {% endif %}
+
+
+                    <!-- Product Details -->
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+
+                            <a href="{% url 'product_detail' item.product.id %}"
+                               class="text-decoration-none text-dark">
+
+                                {{ item.product.name }}
+
+                            </a>
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            {{ item.product.description|truncatewords:8 }}
+
+                        </p>
+
+
+                        <h5 class="fw-bold">
+
+                            ₹{{ item.product.price }}
+
+                        </h5>
+
+
+                        <!-- Add To Cart -->
+
+                        {% if item.product.stock > 0 %}
+
+                        <a href="{% url 'add_to_cart' item.product.id %}"
+                           class="btn btn-primary w-100 mt-2">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            Add to Cart
+
+                        </a>
+
+                        {% else %}
+
+                        <button class="btn btn-secondary w-100 mt-2"
+                                disabled>
+
+                            <i class="fa-solid fa-ban"></i>
+                            Out of Stock
+
+                        </button>
+
+                        {% endif %}
+
+
+                        <!-- Remove -->
+
+                     <button type="button"
+        class="btn btn-outline-danger w-100 mt-2 remove-wishlist-btn"
+        data-product-id="{{ item.product.id }}">
+
+    <i class="fa-solid fa-trash"></i>
+    Remove
+
+</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- Empty Wishlist -->
+
+        <div class="text-center py-5">
+
+            <div class="mb-4">
+
+                <i class="fa-regular fa-heart text-muted"
+                   style="font-size: 80px;">
+                </i>
+
+            </div>
+
+
+            <h3 class="fw-bold">
+                Your Wishlist is Empty
+            </h3>
+
+
+            <p class="text-muted mb-4">
+
+                Save your favourite products here
+                and buy them later.
+
+            </p>
+
+
+            <a href="/" class="btn btn-primary px-4">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+                Start Shopping
+
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const removeButtons =
+        document.querySelectorAll(".remove-wishlist-btn");
+
+    removeButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const productId =
+                this.dataset.productId;
+
+            const card =
+                this.closest(".col-12, .col-sm-6, .col-lg-3");
+
+            fetch(`/wishlist/toggle/${productId}/`, {
+                method: "GET",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                console.log("Wishlist remove:", data);
+
+                if (!data.success) {
+                    return;
+                }
+
+                if (!data.added) {
+
+                    // Product card remove
+                    if (card) {
+                        card.remove();
+                    }
+
+                    // Navbar count update
+                    const badge =
+                        document.getElementById(
+                            "wishlist-count-badge"
+                        );
+
+                    if (badge) {
+
+                        if (data.wishlist_count > 0) {
+
+                            badge.textContent =
+                                data.wishlist_count;
+
+                            badge.classList.remove("d-none");
+
+                        } else {
+
+                            badge.textContent = "";
+
+                            badge.classList.add("d-none");
+                        }
+                    }
+
+                    // Agar last product bhi remove ho gaya
+                    if (data.wishlist_count === 0) {
+
+                        location.reload();
+
+                    }
+                }
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "Remove Wishlist Error:",
+                    error
+                );
+
+            });
+
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

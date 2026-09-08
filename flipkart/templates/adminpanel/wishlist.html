@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Wishlist
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .wishlist-admin-page {
+        background: #f5f7fb;
+        min-height: 100vh;
+        padding: 30px;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+    }
+
+    .page-header h2 {
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .page-header p {
+        opacity: 0.85;
+        margin-bottom: 0;
+    }
+
+    /* Wishlist Card */
+    .wishlist-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+        border: 1px solid #edf0f5;
+    }
+
+    /* Table */
+    .wishlist-table thead th {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 15px;
+    }
+
+    .wishlist-table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .wishlist-table tbody tr {
+        transition: 0.2s;
+    }
+
+    .wishlist-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    /* User Avatar */
+    .user-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #eaf1ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    /* Product Image */
+    .product-image {
+        width: 55px;
+        height: 55px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+    }
+
+    /* Product Placeholder */
+    .product-placeholder {
+        width: 55px;
+        height: 55px;
+        border-radius: 10px;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+    }
+
+    /* Price */
+    .product-price {
+        font-weight: 700;
+        color: #16a34a;
+    }
+
+    /* Date */
+    .wishlist-date {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    /* Empty State */
+    .empty-wishlist {
+        padding: 60px 20px;
+        text-align: center;
+        color: #64748b;
+    }
+
+    .empty-wishlist i {
+        font-size: 50px;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    /* Count Badge */
+    .wishlist-count {
+        background: #fee2e2;
+        color: #dc2626;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+
+        .wishlist-admin-page {
+            padding: 18px;
+        }
+
+        .page-header {
+            padding: 22px;
+        }
+
+    }
+
+</style>
+
+
+<div class="wishlist-admin-page">
+
+    <!-- Page Header -->
+
+    <div class="page-header">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-heart me-2"></i>
+                    Customer Wishlist
+                </h2>
+
+                <p>
+                    View all products added to wishlists by customers.
+                </p>
+
+            </div>
+
+            <div class="wishlist-count">
+
+                <i class="fa-solid fa-heart me-1"></i>
+
+                {{ wishlist_items|length }} Items
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Wishlist Table -->
+
+    <div class="wishlist-card">
+
+        {% if wishlist_items %}
+
+        <div class="table-responsive">
+
+            <table class="table wishlist-table align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Customer</th>
+
+                        <th>Email</th>
+
+                        <th>Product</th>
+
+                        <th>Price</th>
+
+                        <th>Added Date</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in wishlist_items %}
+
+                    <tr>
+
+                        <!-- Number -->
+
+                        <td>
+
+                            <strong>
+                                {{ forloop.counter }}
+                            </strong>
+
+                        </td>
+
+
+                        <!-- Customer -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="user-avatar me-3">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+
+                                        {{ item.user.username }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Email -->
+
+                        <td>
+
+                            {{ item.user.email }}
+
+                        </td>
+
+
+                        <!-- Product -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center">
+
+                                {% if item.product.image %}
+
+                                <img
+                                    src="{{ item.product.image.url }}"
+                                    alt="{{ item.product.name }}"
+                                    class="product-image"
+                                >
+
+                                {% else %}
+
+                                <div class="product-placeholder">
+
+                                    <i class="fa-solid fa-box"></i>
+
+                                </div>
+
+                                {% endif %}
+
+
+                                <div class="ms-3">
+
+                                    <strong>
+
+                                        {{ item.product.name }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- Price -->
+
+                        <td>
+
+                            <span class="product-price">
+
+                                ₹{{ item.product.price }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- Added Date -->
+
+                        <td>
+
+                            <span class="wishlist-date">
+
+                                {{ item.created_at|date:"d M Y, h:i A" }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <!-- Empty State -->
+
+        <div class="empty-wishlist">
+
+            <i class="fa-regular fa-heart"></i>
+
+            <h5>
+                No Wishlist Items Found
+            </h5>
+
+            <p>
+                Customers haven't added any products to their wishlist yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

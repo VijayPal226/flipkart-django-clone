@@ -1,0 +1,799 @@
+{% extends 'userbase.html' %}
+
+{% block title %}
+My Dashboard
+{% endblock %}
+
+
+{% block user_content %}
+
+<style>
+    .user-dashboard-header {
+        margin-bottom: 30px;
+    }
+
+    .user-dashboard-header h2 {
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .user-dashboard-header p {
+        color: #6c757d;
+        margin-bottom: 0;
+    }
+
+
+    /* ==============================
+       STAT CARDS
+    ============================== */
+
+    .dashboard-stat-card {
+        background: #ffffff;
+        border: 1px solid #e9edf2;
+        border-radius: 16px;
+        padding: 22px;
+        height: 100%;
+        transition: all 0.25s ease;
+    }
+
+    .dashboard-stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 13px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #eef5ff;
+        color: #0d6efd;
+
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .stat-title {
+        color: #6c757d;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #212529;
+    }
+
+
+    /* ==============================
+       CONTENT CARD
+    ============================== */
+
+    .dashboard-card {
+        background: #ffffff;
+        border: 1px solid #e9edf2;
+        border-radius: 16px;
+        padding: 24px;
+        height: 100%;
+    }
+
+    .dashboard-card-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+
+    /* ==============================
+       QUICK ACTIONS
+    ============================== */
+
+    .quick-action {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        padding: 14px;
+
+        border: 1px solid #e9edf2;
+        border-radius: 12px;
+
+        text-decoration: none;
+        color: #212529;
+
+        margin-bottom: 12px;
+
+        transition: all 0.2s ease;
+    }
+
+    .quick-action:hover {
+        color: #0d6efd;
+        border-color: #0d6efd;
+        transform: translateX(3px);
+    }
+
+    .quick-action-icon {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f1f5f9;
+        border-radius: 10px;
+
+        color: #0d6efd;
+    }
+
+    .quick-action strong {
+        display: block;
+        font-size: 14px;
+    }
+
+    .quick-action small {
+        color: #6c757d;
+    }
+
+
+    /* ==============================
+       ORDER TABLE
+    ============================== */
+
+    .order-table th {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 600;
+        border-bottom: 1px solid #e9edf2;
+    }
+
+    .order-table td {
+        vertical-align: middle;
+        font-size: 14px;
+        padding: 15px 8px;
+    }
+
+    .status-badge {
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #eef5ff;
+        color: #0d6efd;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+    /* ==============================
+       EMPTY ORDERS
+    ============================== */
+
+    .empty-orders {
+        text-align: center;
+        padding: 40px 20px;
+        color: #6c757d;
+    }
+
+    .empty-orders i {
+        font-size: 42px;
+        margin-bottom: 15px;
+        color: #adb5bd;
+    }
+
+
+    /* ==============================
+       MOBILE
+    ============================== */
+
+    @media (max-width: 768px) {
+
+        .dashboard-stat-card {
+            padding: 18px;
+        }
+
+        .stat-number {
+            font-size: 24px;
+        }
+
+        .dashboard-card {
+            padding: 18px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+    }
+</style>
+
+
+<!-- ===== HEADER ===== -->
+
+<div class="user-dashboard-header">
+
+    <h2>
+        Welcome, {{ request.user.first_name|default:request.user.username }} 👋
+    </h2>
+
+    <p>
+        Manage your orders, wishlist and account from here.
+    </p>
+
+</div>
+
+
+<!-- ==== STAT CARDS ===== -->
+
+<div class="row g-4 mb-4">
+
+
+    <!-- ORDERS -->
+
+    <div class="col-lg-4 col-md-6">
+
+        <div class="dashboard-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+            <div class="stat-title">
+                Total Orders
+            </div>
+
+            <div class="stat-number">
+                {{ total_orders }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WISHLIST -->
+
+    <div class="col-lg-4 col-md-6">
+
+        <div class="dashboard-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-heart"></i>
+
+            </div>
+
+            <div class="stat-title">
+                Wishlist Items
+            </div>
+
+            <div class="stat-number">
+                {{ wishlist_count }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CART -->
+
+    <div class="col-lg-4 col-md-6">
+
+        <div class="dashboard-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+            </div>
+
+            <div class="stat-title">
+                Cart Items
+            </div>
+
+            <div class="stat-number">
+                {{ cart_count }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- ==============================
+     USER PROFILE
+============================== -->
+
+<div class="dashboard-card mb-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div class="dashboard-card-title mb-0">
+            My Profile
+        </div>
+
+        <a href="{% url 'profile_edit' %}" class="btn btn-sm btn-outline-primary">
+
+            <i class="fa-solid fa-pen me-1"></i>
+            Edit Profile
+
+        </a>
+
+    </div>
+
+
+    <div class="row align-items-center">
+
+        <!-- PROFILE IMAGE -->
+
+        <div class="col-md-3 text-center mb-4 mb-md-0">
+
+            {% if profile.profile_image %}
+
+            <img src="{{ profile.profile_image.url }}" alt="Profile" style="
+                        width:110px;
+                        height:110px;
+                        object-fit:cover;
+                        border-radius:50%;
+                        border:4px solid #eef5ff;
+                     ">
+
+            {% else %}
+
+            <div style="
+                    width:110px;
+                    height:110px;
+                    border-radius:50%;
+                    background:#eef5ff;
+                    color:#0d6efd;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin:auto;
+                    font-size:40px;
+                ">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PROFILE INFORMATION -->
+
+        <div class="col-md-9">
+
+            <div class="row g-3">
+
+                <!-- FULL NAME -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Full Name
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.full_name|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Username
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ request.user.username }}
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Email
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ request.user.email|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="col-md-6">
+
+                    <small class="text-muted">
+                        Phone
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.phone|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- CITY -->
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+                        City
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.city|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- STATE -->
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+                        State
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.state|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- PINCODE -->
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+                        Pincode
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.pincode|default:"Not added" }}
+                    </div>
+
+                </div>
+
+
+                <!-- ADDRESS -->
+
+                <div class="col-12">
+
+                    <small class="text-muted">
+                        Address
+                    </small>
+
+                    <div class="fw-semibold">
+                        {{ profile.address|default:"Not added" }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ======= MAIN CONTENT ======= -->
+
+<div class="row g-4">
+
+
+    <!-- RECENT ORDERS -->
+
+    <div class="col-lg-8">
+
+        <div class="dashboard-card">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div class="dashboard-card-title">
+                    Recent Orders
+                </div>
+
+                <a href="{% url 'my_orders' %}" class="btn btn-sm btn-outline-primary">
+
+                    View All
+
+                </a>
+
+            </div>
+
+
+            {% if recent_orders %}
+
+            <div class="table-responsive">
+
+                <table class="table order-table mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for order in recent_orders %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    #{{ order.id }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ order.created_at|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                ₹{{ order.total_amount }}
+                            </td>
+
+                            <td>
+
+                                <span class="status-badge">
+
+                                    {{ order.status|title }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-orders">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <h6>
+                    No orders yet
+                </h6>
+
+                <p class="mb-3">
+                    You haven't placed any orders yet.
+                </p>
+
+                <a href="{% url 'home' %}" class="btn btn-primary btn-sm">
+
+                    Start Shopping
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-card-title mb-4">
+            Quick Actions
+        </div>
+
+        <div class="row g-3">
+
+            <!-- MY ORDERS -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'my_orders' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            My Orders
+                        </div>
+
+                        <small class="text-muted">
+                            View your orders
+                        </small>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- WISHLIST -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'wishlist' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            My Wishlist
+                        </div>
+
+                        <small class="text-muted">
+                            Saved products
+                        </small>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- CART -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'cart_detail' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            My Cart
+                        </div>
+
+                        <small class="text-muted">
+                            View your cart
+                        </small>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- EDIT PROFILE -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'profile_edit' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            Edit Profile
+                        </div>
+
+                        <small class="text-muted">
+                            Update your details
+                        </small>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- CHANGE PASSWORD -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'change_password' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            Change Password
+                        </div>
+
+                        <small class="text-muted">
+                            Secure your account
+                        </small>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <!-- LOGOUT -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <a href="{% url 'logout' %}" class="quick-action text-decoration-none">
+
+                    <div class="quick-action-icon">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </div>
+
+                    <div>
+                        <div class="fw-semibold">
+                            Logout
+                        </div>
+
+                        <small class="text-muted">
+                            Sign out securely
+                        </small>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

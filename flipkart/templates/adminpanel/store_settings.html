@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Store Information
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-store me-2"></i>
+                Store Information
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage your store contact and business information
+            </p>
+        </div>
+
+        <a href="{% url 'admin_settings' %}"
+           class="btn btn-light border">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Settings
+
+        </a>
+
+    </div>
+
+
+    <!-- Messages -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+
+                <i class="fa-solid fa-circle-check me-2"></i>
+
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="row g-4">
+
+        <!-- Store Preview -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm store-preview">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="store-icon mx-auto mb-3">
+
+                        <i class="fa-solid fa-store"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold mb-1">
+                        {{ store.store_name }}
+                    </h4>
+
+                    <p class="text-muted mb-4">
+                        Your Online Store
+                    </p>
+
+
+                    {% if store.store_email %}
+
+                    <div class="preview-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>{{ store.store_email }}</span>
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if store.phone %}
+
+                    <div class="preview-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>{{ store.phone }}</span>
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if store.city or store.state %}
+
+                    <div class="preview-item">
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            {{ store.city }}
+                            {% if store.city and store.state %}, {% endif %}
+                            {{ store.state }}
+                        </span>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Store Form -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold mb-1">
+                            Store Details
+                        </h5>
+
+                        <p class="text-muted small mb-0">
+                            Update the information displayed for your store.
+                        </p>
+
+                    </div>
+
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+
+                            <!-- Store Name -->
+
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold">
+                                    Store Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="store_name"
+                                    class="form-control"
+                                    value="{{ store.store_name }}"
+                                    placeholder="Enter store name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Email -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Store Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    name="store_email"
+                                    class="form-control"
+                                    value="{{ store.store_email }}"
+                                    placeholder="store@example.com"
+                                >
+
+                            </div>
+
+
+                            <!-- Phone -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-semibold">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    class="form-control"
+                                    value="{{ store.phone }}"
+                                    placeholder="Enter phone number"
+                                >
+
+                            </div>
+
+
+                            <!-- Address -->
+
+                            <div class="col-12">
+
+                                <label class="form-label fw-semibold">
+                                    Address
+                                </label>
+
+                                <textarea
+                                    name="address"
+                                    class="form-control"
+                                    rows="3"
+                                    placeholder="Enter store address"
+                                >{{ store.address }}</textarea>
+
+                            </div>
+
+
+                            <!-- City -->
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    City
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="city"
+                                    class="form-control"
+                                    value="{{ store.city }}"
+                                    placeholder="City"
+                                >
+
+                            </div>
+
+
+                            <!-- State -->
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    State
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="state"
+                                    class="form-control"
+                                    value="{{ store.state }}"
+                                    placeholder="State"
+                                >
+
+                            </div>
+
+
+                            <!-- Pincode -->
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    Pincode
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="pincode"
+                                    class="form-control"
+                                    value="{{ store.pincode }}"
+                                    placeholder="Pincode"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <div class="d-flex justify-content-end gap-2">
+
+                            <a href="{% url 'admin_settings' %}"
+                               class="btn btn-light border">
+
+                                Cancel
+
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4">
+
+                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.store-preview {
+    border-radius: 16px;
+}
+
+.store-icon {
+    width: 85px;
+    height: 85px;
+
+    border-radius: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef4ff;
+    color: #0d6efd;
+
+    font-size: 34px;
+}
+
+.preview-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid #eee;
+
+    text-align: left;
+
+    color: #555;
+}
+
+.preview-item i {
+    width: 20px;
+    color: #0d6efd;
+}
+
+.form-control {
+    min-height: 45px;
+    border-radius: 10px;
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.10);
+}
+
+</style>
+
+{% endblock %}
